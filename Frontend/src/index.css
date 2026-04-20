@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@theme {
+  /* 1. Define your custom Gold Accent */
+  /* This automatically creates classes like 'bg-art-gold' and 'text-art-gold' */
+  --color-art-gold: #A6894B;
+  
+  /* 2. Define your clean typography */
+  /* This creates the 'font-main' class */
+  --font-main: "Montserrat", sans-serif;
+  
+  /* 3. Custom Spacing for that 'Aesthetic' look */
+  --tracking-gallery: 0.2em;
+}
+
+/* Base styles for a clean, white-themed background */
+@layer base {
+  body {
+    @apply bg-white text-gray-900 antialiased;
+    font-family: var(--font-main);
+  }
+}
+
+@layer utilities {
+  .underline-animate {
+    @apply relative overflow-hidden;
+  }
+  .underline-animate::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-full h-[1px] bg-art-gold transition-transform duration-300 origin-right scale-x-0;
+  }
+  .underline-animate:hover::after {
+    @apply origin-left scale-x-100;
+  }
+}
