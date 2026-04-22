@@ -36,6 +36,8 @@ const BlogManager = ({ API_URL }) => {
   const [imageList, setImageList] = useState([]); // { src, file?, remotePath? }
   const [showAllImages, setShowAllImages] = useState(false);
 
+  const baseUrl = import.meta.env.VITE_BASE_URL.split('/api')[0].replace(/\/$/, "");
+
   useEffect(() => {
     fetchBlogs();
   }, [searchTerm]);
@@ -76,7 +78,7 @@ const BlogManager = ({ API_URL }) => {
         keywords: blog.seo?.keywords || ''
       }
     });
-    const remoteImgs = (blog.images || []).map(img => ({ src: `${API_URL.replace('/api', '')}${img}`, remotePath: img }));
+    const remoteImgs = (blog.images || []).map(img => ({ src: `${baseUrl}${img.startsWith('/') ? img : `/${img}`}`, remotePath: img }));
     setImagePreviews(remoteImgs.map(i => i.src));
     setImageList(remoteImgs);
     setActiveTab('form');
@@ -290,7 +292,7 @@ const BlogManager = ({ API_URL }) => {
                             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-stone-100 flex-shrink-0 overflow-hidden relative border border-stone-200">
                               {(blog.images && blog.images[0]) ? (
                                 <img 
-                                  src={`${API_URL.replace('/api', '')}${blog.images[0]}`} 
+                                  src={`${baseUrl}${blog.images[0].startsWith('/') ? blog.images[0] : `/${blog.images[0]}`}`} 
                                   alt="" 
                                   className="w-full h-full object-cover"
                                 />

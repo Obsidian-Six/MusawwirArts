@@ -9,14 +9,17 @@ import EditHomepage from './components/EditHomePage';
 import DraftsList from './components/DraftsList';
 import AdminTestimonials from './components/Testimonials';
 import BlogManager from './components/BlogManager';
+import FeaturedCollectionsManager from './components/FeaturedCollectionsManager';
+import ChangePassword from './components/ChangePassword';
 
-import { Menu, X, Star,FileText, Plus, LayoutGrid, MessageSquare, ChevronLeft } from 'lucide-react';
+import { Menu, X, Star,FileText, Plus, LayoutGrid, MessageSquare, ChevronLeft, Image, User } from 'lucide-react';
 
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [selectedPainting, setSelectedPainting] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
 
   const [stats, setStats] = useState({
     totalPaintings: 0,
@@ -59,12 +62,19 @@ const AdminDashboard = () => {
     fetchStats();
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('adminUser');
+    window.location.href = '/admin/login';
+  };
+
   const navItems = [
     { id: 'overview', label: 'Spotlight', icon: <Star size={18} /> },
     { id: 'edithomePage', label: 'Add Home Page', icon: <Plus size={18} /> },
     { id: 'homepage', label: 'Manage Home Page', icon: <LayoutGrid size={18} /> },
     { id: 'add', label: 'Add Painting', icon: <Plus size={18} /> },
     { id: 'manage', label: 'Manage Gallery', icon: <LayoutGrid size={18} /> },
+    { id: 'featured', label: 'Featured Collections', icon: <Image size={18} /> },
     { id: 'manageDrafts', label: 'Manage Drafts', icon: <FileText size={18} /> },
     { id: 'manageCategory', label: 'Manage Categories', icon: <LayoutGrid size={18} /> },
     { id: 'testimonials', label: 'Testimonials', icon: <FileText size={18} /> },
@@ -102,7 +112,7 @@ const AdminDashboard = () => {
 
       <div className="p-6 mt-auto border-t border-stone-50">
         <button
-          onClick={() => { /* Add logout logic */ }}
+          onClick={handleLogout}
           className="text-xs font-bold uppercase tracking-widest text-red-400 hover:text-red-600 transition-colors px-4"
         >
           Sign Out
@@ -117,12 +127,44 @@ const AdminDashboard = () => {
       {/* MOBILE HEADER */}
       <header className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-stone-100 flex items-center justify-between px-6 z-40">
         <span className="font-serif italic text-lg">Musawwir</span>
-        <button
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="p-2 text-stone-600"
-        >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        
+        <div className="flex items-center gap-2">
+          {/* Mobile Profile Icon */}
+          <div className="relative">
+            <button 
+              onClick={() => setProfileMenuOpen(!profileMenuOpen)}
+              className="w-8 h-8 rounded-full bg-stone-900 text-white flex items-center justify-center font-serif text-sm mr-2"
+            >
+              A
+            </button>
+            {profileMenuOpen && (
+              <>
+                <div className="fixed inset-0 z-40" onClick={() => setProfileMenuOpen(false)}></div>
+                <div className="absolute right-0 mt-2 w-48 bg-white border border-stone-100 shadow-xl rounded-xl py-2 z-50">
+                  <button 
+                    onClick={() => { setActiveTab('changepassword'); setProfileMenuOpen(false); setIsMobileMenuOpen(false); }}
+                    className="w-full text-left px-4 py-2 text-sm text-stone-600 hover:bg-stone-50 transition-colors"
+                  >
+                    Change Password
+                  </button>
+                  <button 
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition-colors font-semibold"
+                  >
+                    Logout
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="p-2 text-stone-600"
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </header>
 
       {/* MOBILE SIDEBAR OVERLAY */}
@@ -144,6 +186,43 @@ const AdminDashboard = () => {
 
       {/* MAIN CONTENT */}
       <main className="flex-1 w-full min-h-screen pt-16 lg:pt-0">
+        
+        {/* Desktop Profile Header */}
+        <div className="hidden lg:flex items-center justify-end px-12 py-6 border-b border-stone-100 bg-white">
+          <div className="relative">
+            <button 
+              onClick={() => setProfileMenuOpen(!profileMenuOpen)}
+              className="flex items-center gap-3 hover:bg-stone-50 p-2 rounded-xl transition-colors"
+            >
+              <div className="w-10 h-10 rounded-full bg-stone-900 text-white flex items-center justify-center font-serif text-lg">A</div>
+              <div className="text-left">
+                <p className="text-sm font-bold text-stone-900">Admin</p>
+                <p className="text-[10px] uppercase tracking-wider text-stone-500">Settings</p>
+              </div>
+            </button>
+            
+            {profileMenuOpen && (
+              <>
+                <div className="fixed inset-0 z-40" onClick={() => setProfileMenuOpen(false)}></div>
+                <div className="absolute right-0 mt-2 w-48 bg-white border border-stone-100 shadow-xl rounded-xl py-2 z-50 animate-in fade-in slide-in-from-top-2">
+                  <button 
+                    onClick={() => { setActiveTab('changepassword'); setProfileMenuOpen(false); }}
+                    className="w-full text-left px-4 py-2 text-sm text-stone-600 hover:bg-stone-50 hover:text-stone-900 transition-colors"
+                  >
+                    Change Password
+                  </button>
+                  <button 
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition-colors font-semibold"
+                  >
+                    Logout
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+
         <div className="max-w-7xl mx-auto p-6 md:p-12">
 
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -199,8 +278,14 @@ const AdminDashboard = () => {
             {activeTab === 'manageCategory' && (
               <CategoryManager />
             )}
+            {activeTab === 'featured' && (
+              <FeaturedCollectionsManager />
+            )}
             {activeTab === 'testimonials' && (
               <AdminTestimonials />
+            )}
+            {activeTab === 'changepassword' && (
+              <ChangePassword />
             )}
             
             {activeTab === 'manageDrafts' && (

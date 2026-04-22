@@ -11,6 +11,7 @@ import ExploreByStyle from './Components/ExploreByStyle';
 import Footer from './Components/Footer';
 import ArtSection from './Components/ArtSection';
 import NewCollection from './Components/NewCollection';
+import FeaturedCollections from './Components/FeaturedCollections';
 import InstagramSection from './Components/ConnectInstagram';
 import SoldPaintings from './Components/SoldPaintings';
 import DiscoverArt from './Components/DiscoverArt';
@@ -26,12 +27,14 @@ import BlogPage from './Pages/Blog/BlogPage';
 import BlogDetailPage from './Pages/Blog/BlogDetailPage';
 import FAQ from './Pages/FAQ/FAQ';
 import TermsOfService from './Pages/TermsOfService/TermsOfService';
-import CopyrightPolicy from './Pages/CopyRight/CopyrightPolicy';
+import CopyrightPolicy from './Pages/CopyRight/Copyrightpolicy';
 import ArtistDetail from './Pages/Artist/ArtistDetail';
+import MandeepGhai from './Pages/Artist/MandeepGhai';
 
 
 // Admin Components
 import AdminLogin from './Admin/AdminLogin';
+import AdminSignup from './Admin/AdminSignup';
 import AdminDashboard from './Admin/AdminDashboard';
 
 const AppContent = () => {
@@ -57,10 +60,12 @@ const AppContent = () => {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/terms" element={<TermsOfService />} />
         <Route path="/copyright" element={<CopyrightPolicy />} />
+        <Route path="/artist" element={<MandeepGhai />} />
         <Route path="/artist/amol-pawar" element={<ArtistDetail />} />
 
         {/* Admin Routes */}
         <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/signup" element={<AdminSignup />} />
         <Route 
           path="/admin/dashboard" 
           element={
@@ -153,6 +158,7 @@ function Home() {
       <Features />
       <CategorySection />
       <ExploreByStyle />
+      <FeaturedCollections />
       <NewCollection />
       <ArtSection onArtClick={handleArtClick} /> 
       <DiscoverArt onArtClick={handleArtClick} />

@@ -2,38 +2,42 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 
-const AdminLogin = () => {
+const AdminSignup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
     setSuccess(false);
 
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      setLoading(false);
+      return;
+    }
+
     try {
-      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/login`, { 
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/register`, { 
         email, 
         password 
       });
 
-      if (response.data.success) {
+      if (response.data.message === 'User registered successfully' || response.status === 201) {
         setSuccess(true);
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('adminUser', JSON.stringify(response.data.user));
-        
         setTimeout(() => {
-          navigate('/admin/dashboard');
-        }, 1500);
+          navigate('/admin/login');
+        }, 2000);
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Authentication Failed');
+      setError(err.response?.data?.message || err.response?.data?.error || 'Registration Failed');
     } finally {
       setLoading(false);
     }
@@ -51,12 +55,12 @@ const AdminLogin = () => {
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
             </div>
-            <h2 className="text-xl md:text-2xl font-serif text-stone-900">Access Granted</h2>
-            <p className="text-stone-500 text-[10px] md:text-xs mt-2 tracking-widest uppercase">Opening Dashboard...</p>
+            <h2 className="text-xl md:text-2xl font-serif text-stone-900">Registration Complete</h2>
+            <p className="text-stone-500 text-[10px] md:text-xs mt-2 tracking-widest uppercase">Redirecting to Login...</p>
           </div>
         )}
 
-        {/* LEFT SIDE: Visual Section (Hidden on Mobile/Tablet) */}
+        {/* LEFT SIDE: Visual Section */}
         <div className="md:w-1/2 relative hidden md:block">
           <img 
             src="/Admin_side.jpeg" 
@@ -79,20 +83,18 @@ const AdminLogin = () => {
             to="/" 
             className="absolute top-6 left-6 md:top-8 md:left-8 flex items-center gap-2 text-stone-400 hover:text-stone-900 transition-colors group text-[10px] tracking-[0.2em] uppercase font-bold"
           >
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:-translate-x-1 transition-transform"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:-translate-x-1 transition-transform">
               <path d="m15 18-6-6 6-6"/>
             </svg>
             Gallery
           </Link>
 
           <div className="mb-8 md:mb-10 mt-8 md:mt-0">
-            <h1 className="text-2xl md:text-3xl font-serif text-stone-900 mb-2">Welcome Back</h1>
-            <p className="text-stone-600 text-sm">Please enter your administrative credentials.</p>
+            <h1 className="text-2xl md:text-3xl font-serif text-stone-900 mb-2">Create Account</h1>
+            <p className="text-stone-600 text-sm">Register new administrative credentials.</p>
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-6 md:space-y-8" autoComplete="off">
+          <form onSubmit={handleSignup} className="space-y-6 md:space-y-8" autoComplete="off">
             
             {error && (
               <div className="bg-red-50 text-red-700 text-[11px] md:text-xs p-3 md:p-4 rounded-xl border border-red-100 font-bold flex items-center gap-3 animate-in slide-in-from-top-2">
@@ -105,13 +107,11 @@ const AdminLogin = () => {
 
             <div className="group">
               <label className="block text-[10px] md:text-[11px] uppercase tracking-[0.2em] text-stone-500 mb-1 md:mb-2 font-bold group-focus-within:text-stone-900 transition-colors">
-                Admin Identifier
+                Admin Email
               </label>
               <input
                 type="email"
-                name="admin-email-unique"
                 required
-                autoComplete="off"
                 className="w-full px-0 py-2 md:py-3 border-b border-stone-200 focus:border-stone-900 outline-none transition-all text-stone-900 placeholder:text-stone-300 bg-transparent text-sm md:text-base"
                 placeholder="Enter email address"
                 value={email}
@@ -126,30 +126,39 @@ const AdminLogin = () => {
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
-                  name="admin-password-unique"
                   required
-                  autoComplete="new-password"
                   className="w-full px-0 py-2 md:py-3 border-b border-stone-200 focus:border-stone-900 outline-none transition-all text-stone-900 placeholder:text-stone-300 bg-transparent pr-10 text-sm md:text-base"
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-0 bottom-2 md:bottom-3 text-stone-400 hover:text-stone-900 transition-colors focus:outline-none p-1"
                 >
                   {showPassword ? (
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/>
-                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></svg>
                   ) : (
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>
-                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
                   )}
                 </button>
+              </div>
+            </div>
+
+            <div className="group relative">
+              <label className="block text-[10px] md:text-[11px] uppercase tracking-[0.2em] text-stone-500 mb-1 md:mb-2 font-bold group-focus-within:text-stone-900 transition-colors">
+                Confirm Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  required
+                  className="w-full px-0 py-2 md:py-3 border-b border-stone-200 focus:border-stone-900 outline-none transition-all text-stone-900 placeholder:text-stone-300 bg-transparent text-sm md:text-base"
+                  placeholder="••••••••"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
               </div>
             </div>
 
@@ -159,35 +168,21 @@ const AdminLogin = () => {
                 disabled={loading || success}
                 className="w-full bg-stone-900 text-stone-50 py-3.5 md:py-4 rounded-full text-[12px] font-bold tracking-[0.15em] uppercase hover:bg-black transition-all shadow-xl active:scale-[0.98] disabled:bg-stone-300 disabled:shadow-none"
               >
-                {loading ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Verifying Identity...
-                  </span>
-                ) : success ? 'Success' : 'Access Dashboard'}
+                {loading ? 'Registering...' : success ? 'Success' : 'Create Account'}
               </button>
             </div>
             
             <div className="text-center mt-6">
-              <Link to="/admin/signup" className="text-xs text-stone-500 hover:text-stone-900 font-semibold tracking-wider transition-colors inline-block pb-1 border-b border-transparent hover:border-stone-900">
-                Register administrative account.
+              <Link to="/admin/login" className="text-xs text-stone-500 hover:text-stone-900 font-semibold tracking-wider transition-colors inline-block pb-1 border-b border-transparent hover:border-stone-900">
+                Already have an account? Login here.
               </Link>
             </div>
           </form>
 
-          {/* FOOTER: Optional extra link or copyright for mobile */}
-          <div className="mt-8 pt-8 border-t border-stone-50 md:hidden">
-             <p className="text-center text-[10px] text-stone-400 uppercase tracking-widest">
-               Musawwir Arts Administrative System
-             </p>
-          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default AdminLogin;
+export default AdminSignup;

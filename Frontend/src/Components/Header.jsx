@@ -44,6 +44,7 @@ const Header = () => {
                         <div className="hidden md:flex items-center">
                             <nav className="flex items-center gap-8 lg:gap-14 text-[13px] font-bold uppercase tracking-[0.2em] text-gray-800">
                                 <Link to='/paintings' className="hover:text-[#A6894B] transition-colors underline-animate">Paintings</Link> 
+                                <Link to='/artist' className="hover:text-[#A6894B] transition-colors underline-animate">Artist</Link> 
                                 <Link to="/aboutus" className="hover:text-[#A6894B] transition-colors underline-animate">About Us</Link>
                             </nav>
                         </div>
@@ -78,6 +79,7 @@ const Header = () => {
                     <nav className="flex md:hidden justify-between items-center mt-4 pt-3 border-t border-gray-50 text-[9px] font-bold uppercase tracking-[0.15em] text-gray-600 px-2">
                         <div className="flex gap-6">
                             <Link to="/paintings" className="hover:text-[#A6894B]">Paintings</Link>
+                            <Link to="/artist" className="hover:text-[#A6894B]">Artist</Link>
                             <Link to="/aboutus" className="hover:text-[#A6894B]">About Us</Link>
                         </div>
                         <Link to="/blog" className="hover:text-[#A6894B]">Blog</Link>

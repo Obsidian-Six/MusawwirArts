@@ -15,6 +15,11 @@ export const createCategory = async (req, res) => {
     await category.save();
     res.status(201).json({ success: true, data: category });
   } catch (error) {
+    // Handle duplicate key (unique slug) errors with a friendly message
+    if (error && (error.code === 11000 || error.name === 'MongoServerError')) {
+      const dupField = error.keyValue ? Object.keys(error.keyValue)[0] : 'slug';
+      return res.status(400).json({ success: false, message: `Category with this ${dupField} already exists.` });
+    }
     res.status(400).json({ success: false, message: error.message });
   }
 };
@@ -74,6 +79,10 @@ export const updateCategory = async (req, res) => {
 
     res.status(200).json({ success: true, data: category });
   } catch (error) {
+    if (error && (error.code === 11000 || error.name === 'MongoServerError')) {
+      const dupField = error.keyValue ? Object.keys(error.keyValue)[0] : 'slug';
+      return res.status(400).json({ success: false, message: `Category with this ${dupField} already exists.` });
+    }
     res.status(400).json({ success: false, message: error.message });
   }
 };

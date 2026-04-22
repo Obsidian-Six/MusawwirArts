@@ -73,7 +73,7 @@ const Footer = () => {
         {/* Very bottom bar */}
         <div className="flex flex-col md:flex-row justify-between items-center py-6 px-8 md:px-12 text-[11px] md:text-[12px] font-bold text-[#CAA371] gap-4">
           <div className="md:flex-1 flex justify-start">
-            <Link to="/privacy" className="underline underline-offset-4 decoration-[1px] hover:text-[#a07c50] transition-colors">Privacy Policy</Link>
+            <Link to="/copyright" className="underline underline-offset-4 decoration-[1px] hover:text-[#a07c50] transition-colors">Privacy & Copyright Policy</Link>
           </div>
           <div className="md:flex-1 flex justify-center">
             <Link to="/terms" className="underline underline-offset-4 decoration-[1px] hover:text-[#a07c50] transition-colors">Terms of use</Link>

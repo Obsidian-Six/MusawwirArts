@@ -51,12 +51,7 @@ const ProductDetailsPage = () => {
     return () => window.removeEventListener('keydown', handleEsc);
   }, []);
 
-  const handleWhatsAppRedirect = () => {
-    const phoneNumber = "971557430228";
-    const message = `Hi! I'm interested in booking the painting: "${product?.title}" with "${product?.dimensions}". Can you provide more details?`;
-    const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
-  };
+
 
   if (loading) return (
     <div className="h-screen flex items-center justify-center font-serif uppercase tracking-[0.3em] text-stone-500 text-sm animate-pulse">
@@ -158,7 +153,7 @@ const ProductDetailsPage = () => {
 
           <div className="pt-4 flex gap-4">
             <button
-              onClick={handleWhatsAppRedirect}
+              onClick={() => setIsContactOpen(true)}
               className="flex-grow bg-[#1a1a1a] text-white py-5 rounded-sm text-xs font-bold uppercase tracking-[0.25em] hover:bg-stone-800 transition-all active:scale-[0.98] shadow-lg shadow-stone-200"
             >
               Request for Price
@@ -187,6 +182,7 @@ const ProductDetailsPage = () => {
           isOpen={isContactOpen} 
           onClose={() => setIsContactOpen(false)} 
           artworkName={product.title}
+          paintingId={product._id}
           paintingImage={getFullImageUrl(product.imageUrl)}
         />
       )}

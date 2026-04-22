@@ -62,6 +62,15 @@ const CategoryManager = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
+    // Basic slug normalization to detect duplicates client-side
+    const slugCandidate = formData.name.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
+    const existing = categories.find(c => c.slug === slugCandidate && c._id !== editingId);
+    if (existing) {
+      alert('A category with a similar name/slug already exists: "' + existing.name + '". Choose a different name.');
+      setIsSubmitting(false);
+      return;
+    }
+
     const payload = {
       name: formData.name,
       parent: formData.parent || null,
@@ -88,7 +97,12 @@ const CategoryManager = () => {
         body: JSON.stringify(payload)
       });
 
-      if (response.ok) {
+      const result = await response.json().catch(() => null);
+      if (!response.ok) {
+        const msg = result?.message || result?.error || `Request failed with status ${response.status}`;
+        alert(msg);
+        console.error('Category save error:', msg, result);
+      } else {
         alert(editingId ? "Category Updated!" : "Category Created!");
         cancelEdit();
         fetchCategories();
