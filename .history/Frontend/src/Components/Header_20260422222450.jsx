@@ -2,13 +2,12 @@ import React from 'react';
 import { Menu } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 
-const Header = () => {
-    const navigate = useNavigate();
+const Header = () => { 
+    const navigate = useNavigate(); 
 
     return (
         <>
-            <style dangerouslySetInnerHTML={{
-                __html: `
+            <style dangerouslySetInnerHTML={{ __html: `
                 .underline-animate {
                     position: relative;
                     display: inline-block;
@@ -40,28 +39,28 @@ const Header = () => {
                 {/* 2. MAIN NAVIGATION CONTAINER */}
                 <div className="max-w-[1600px] mx-auto px-6 md:px-12 lg:px-24 py-3 md:py-3">
                     <div className="grid grid-cols-3 md:grid-cols-[1.5fr_auto_1.5fr] items-center gap-2 md:gap-4">
-
+                        
                         {/* LEFT: Desktop Nav */}
                         <div className="hidden md:flex items-center">
                             <nav className="flex items-center gap-8 lg:gap-14 text-[13px] font-bold uppercase tracking-[0.2em] text-gray-800">
-                                <Link to='/paintings' className="hover:text-[#A6894B] transition-colors underline-animate">Paintings</Link>
-                                <Link to='/artist' className="hover:text-[#A6894B] transition-colors underline-animate">Artist</Link>
+                                <Link to='/paintings' className="hover:text-[#A6894B] transition-colors underline-animate">Paintings</Link> 
+                                <Link to='/artist' className="hover:text-[#A6894B] transition-colors underline-animate">Artist</Link> 
                                 <Link to="/aboutus" className="hover:text-[#A6894B] transition-colors underline-animate">About Us</Link>
                             </nav>
                         </div>
 
                         {/* MOBILE LEFT: Menu Toggle */}
                         <div className="flex md:hidden items-center">
-                            <Menu
-                                size={22}
-                                strokeWidth={1.5}
-                                className="text-gray-700 cursor-pointer"
-                                onClick={() => navigate('/admin/login')}
+                            <Menu 
+                                size={22} 
+                                strokeWidth={1.5} 
+                                className="text-gray-700 cursor-pointer" 
+                                onClick={() => navigate('/admin/login')} 
                             />
                         </div>
 
                         {/* CENTER: Logo */}
-                        <div onClick={() => navigate('/')} className="flex flex-col items-center justify-center group cursor-pointer">
+                        <div onClick={()=> navigate('/')} className="flex flex-col items-center justify-center group cursor-pointer">
                             <img src="/translogo.png" alt="Logo" className="h-8 sm:h-10 lg:h-12 w-auto object-contain transition-transform duration-500 group-hover:scale-105" />
                             <span className="text-[9px] sm:text-[11px] md:text-[12px] tracking-[0.2em] sm:tracking-[0.35em] font-bold uppercase text-gray-900 mt-1 whitespace-nowrap underline-animate">
                                 MUSAWWIR ART
@@ -77,13 +76,12 @@ const Header = () => {
                     </div>
 
                     {/* 3. MOBILE ONLY NAVIGATION */}
-                    {/* 3. MOBILE ONLY NAVIGATION */}
-                    <nav className="flex md:hidden justify-center items-center mt-4 pt-3 border-t border-gray-50 text-[10px] font-bold uppercase tracking-[0.15em] text-gray-600">
-                        <div className="flex gap-5 sm:gap-8">
+                    <nav className="flex md:hidden justify-between items-center mt-4 pt-3 border-t border-gray-50 text-[9px] font-bold uppercase tracking-[0.15em] text-gray-600 px-2">
+                        <div className="flex gap-6">
                             <Link to="/paintings" className="hover:text-[#A6894B]">Paintings</Link>
                             <Link to="/artist" className="hover:text-[#A6894B]">Artist</Link>
                             <Link to="/aboutus" className="hover:text-[#A6894B]">About Us</Link>
-                            <Link to="/blog" className="hover:text-[#A6894B]">Blog</Link>
+                        <Link to="/blog" className="hover:text-[#A6894B]">Blog</Link>
                         </div>
                     </nav>
                 </div>

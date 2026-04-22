@@ -79,7 +79,7 @@ const TestimonialSlider = () => {
   return (
     <section className="py-24 bg-[#FAF9F6] font-sans text-[#222] overflow-hidden">
       <div className="max-w-[1500px] mx-auto px-6 md:px-12 lg:px-24 relative">
-
+        
         <div className="text-center mb-20">
           <h2 className="text-3xl tracking-[0.25em] font-medium mb-3 uppercase text-stone-800">Testimonials</h2>
           <p className="italic font-serif text-stone-400 text-xl">Feedback from our collectors</p>
@@ -87,7 +87,7 @@ const TestimonialSlider = () => {
 
         <div className="relative flex items-center justify-center">
           {/* Navigation Buttons */}
-          <button
+          <button 
             onClick={() => paginate(-1)}
             className="absolute -left-4 md:-left-12 z-30 p-4 border border-stone-200 rounded-full bg-white/80 backdrop-blur-sm hover:bg-stone-50 transition-all shadow-lg active:scale-90"
           >
@@ -111,8 +111,8 @@ const TestimonialSlider = () => {
                 className="grid grid-cols-1 md:grid-cols-3 gap-8 px-2 md:px-4"
               >
                 {visibleItems.map((item) => (
-                  <motion.div
-                    key={item._id}
+                  <motion.div 
+                    key={item._id} 
                     whileHover={{ y: -10 }}
                     className="flex flex-col h-full bg-white border border-stone-100 p-8 pt-12 shadow-sm hover:shadow-xl transition-all duration-500 rounded-2xl relative group"
                   >
@@ -123,25 +123,25 @@ const TestimonialSlider = () => {
                     <div className="flex flex-col items-center text-center mb-6">
                       <div className="w-32 h-32 bg-stone-50 border-4 border-stone-50 rounded-full overflow-hidden shadow-md group-hover:scale-105 transition-transform duration-500">
                         {item.authorImage ? (
-                          <img
-                            src={getFullImageUrl(item.authorImage)}
-                            alt={item.name}
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              // If the placeholder also fails, stop the loop by setting onerror to null
-                              if (e.currentTarget.src !== window.location.origin + "/placeholder-avatar.jpg") {
-                                e.currentTarget.onerror = null;
-                                e.currentTarget.src = "/placeholder-avatar.jpg";
-                              }
-                            }}
-                          />
+                          <img 
+  src={getFullImageUrl(item.authorImage)} 
+  alt={item.name} 
+  className="w-full h-full object-cover"
+  onError={(e) => { 
+    // If the placeholder also fails, stop the loop by setting onerror to null
+    if (e.currentTarget.src !== window.location.origin + "/placeholder-avatar.jpg") {
+      e.currentTarget.onerror = null; 
+      e.currentTarget.src = "/placeholder-avatar.jpg"; 
+    }
+  }}
+/>
                         ) : (
                           <div className="w-full h-full flex items-center justify-center">
                             <User size={48} className="text-stone-300" />
                           </div>
                         )}
                       </div>
-
+                      
                       <div className="mt-6">
                         <h4 className="font-bold text-xl leading-tight uppercase tracking-wider text-stone-900">
                           {item.name}
@@ -151,9 +151,9 @@ const TestimonialSlider = () => {
                     </div>
 
                     <div className="flex justify-center gap-1 mb-6">
-                      {[...Array(item.stars)].map((_, i) => (
-                        <Star key={i} size={16} fill="#B38B4D" color="#B38B4D" />
-                      ))}
+                        {[...Array(item.stars)].map((_, i) => (
+                          <Star key={i} size={16} fill="#B38B4D" color="#B38B4D" />
+                        ))}
                     </div>
 
                     <div className="border-t border-stone-100 pt-6 flex-grow text-center">
@@ -167,7 +167,7 @@ const TestimonialSlider = () => {
             </AnimatePresence>
           </div>
 
-          <button
+          <button 
             onClick={() => paginate(1)}
             className="absolute -right-4 md:-right-12 z-30 p-4 border border-stone-200 rounded-full bg-white/80 backdrop-blur-sm hover:bg-stone-50 transition-all shadow-lg active:scale-90"
           >
@@ -185,8 +185,9 @@ const TestimonialSlider = () => {
                 setDirection(newDir);
                 setPage(i);
               }}
-              className={`h-1.5 rounded-full transition-all duration-500 ${i === page ? 'w-16 bg-stone-800' : 'w-3 bg-stone-200 hover:bg-stone-300'
-                }`}
+              className={`h-1.5 rounded-full transition-all duration-500 ${
+                i === page ? 'w-16 bg-stone-800' : 'w-3 bg-stone-200 hover:bg-stone-300'
+              }`}
             />
           ))}
         </div>
