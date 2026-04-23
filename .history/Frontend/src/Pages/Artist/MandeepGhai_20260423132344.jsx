@@ -178,7 +178,7 @@ const MandeepGhai = () => {
                                                       if (e?.target?.dataset?.fallback === 'true') return;
                                                       e.target.dataset.fallback = 'true';
                                                       e.target.src = buildImageUrl('');
-                                                    } catch (err) {console.error('Error loading image:', err);}
+                                                    } catch (err) {}
                                                 }}
                                             />
                                             <div className="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/10 transition-colors duration-500"></div>

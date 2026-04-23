@@ -139,24 +139,12 @@ const FeaturedCollectionsManager = () => {
   const buildImageUrl = (imageUrl) => {
     if (!imageUrl) return '';
     if (/^(https?:)?\/\//i.test(imageUrl)) return imageUrl;
-    const uploadsIndex = imageUrl.indexOf('/uploads');
-    let path = '';
-    if (uploadsIndex !== -1) {
-      path = imageUrl.slice(uploadsIndex);
-    } else {
-      path = '/' + imageUrl.replace(/^\/+/, '');
-    }
+    let cleaned = imageUrl.replace(/^\/+/, '');
+    const afterDomain = cleaned.replace(/^.*?\.com/, '');
+    let path = afterDomain.replace(/^\/?api\/?/, '/');
+    if (!path.startsWith('/')) path = '/' + path;
     const base = API_URL.replace(/\/api\/?$/, '').replace(/\/$/, '');
     return base + path;
-  };
-
-  const PLACEHOLDER_SRC = 'https://via.placeholder.com/400x300?text=Image+Not+Found';
-  const handleImgError = (e) => {
-    try {
-      if (e?.target?.dataset?.fallback === 'true') return;
-      e.target.src = PLACEHOLDER_SRC;
-      e.target.dataset.fallback = 'true';
-    } catch (err) {}
   };
 
   return (
@@ -331,7 +319,9 @@ const FeaturedCollectionsManager = () => {
                       src={buildImageUrl(item.imageUrl)}
                       alt={item.title}
                       className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
-                      onError={handleImgError}
+                      onError={(e) => {
+                        e.target.src = 'https://via.placeholder.com/400x300?text=Image+Not+Found';
+                      }}
                     />
                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
                       <button

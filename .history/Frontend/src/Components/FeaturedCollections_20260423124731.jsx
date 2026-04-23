@@ -54,29 +54,18 @@ const FeaturedCollections = () => {
     // Return absolute or protocol-relative URLs as-is
     if (/^(https?:)?\/\//i.test(imageUrl)) return imageUrl;
 
-    // If the URL contains an uploads path, use that segment directly
-    const uploadsIndex = imageUrl.indexOf('/uploads');
-    let path = '';
-    if (uploadsIndex !== -1) {
-      path = imageUrl.slice(uploadsIndex);
-    } else {
-      // Fallback: strip leading slashes and ensure single leading slash
-      path = '/' + imageUrl.replace(/^\/+/, '');
-    }
+    // Strip any leading slashes
+    let cleaned = imageUrl.replace(/^\/+/, '');
+
+    // Remove any leading domain fragment (e.g. something.com) if present
+    const afterDomain = cleaned.replace(/^.*?\.com/, '');
+
+    // Remove an accidental leading 'api' segment to avoid double '/api' when joining
+    let path = afterDomain.replace(/^\/?api\/?/, '/');
+    if (!path.startsWith('/')) path = '/' + path;
 
     const base = API_URL.replace(/\/api\/?$/, '').replace(/\/$/, '');
     return base + path;
-  };
-
-  const PLACEHOLDER_SRC = 'https://via.placeholder.com/400x300?text=Image+Not+Found';
-  const handleImgError = (e) => {
-    try {
-      if (e?.target?.dataset?.fallback === 'true') return;
-      e.target.src = PLACEHOLDER_SRC;
-      e.target.dataset.fallback = 'true';
-    } catch (err) {
-      // ignore
-    }
   };
 
   if (loading || collections.length === 0) return null;
@@ -108,7 +97,6 @@ const FeaturedCollections = () => {
                   src={buildImageUrl(item.imageUrl)} 
                   alt={item.title} 
                   className="w-full h-full object-contain transition-transform duration-700 ease-in-out group-hover:scale-[1.02]"
-                  onError={handleImgError}
                 />
               </div>
 

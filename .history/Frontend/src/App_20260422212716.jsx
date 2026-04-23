@@ -28,6 +28,7 @@ import BlogDetailPage from './Pages/Blog/BlogDetailPage';
 import FAQ from './Pages/FAQ/FAQ';
 import TermsOfService from './Pages/TermsOfService/TermsOfService';
 import CopyrightPolicy from './Pages/CopyRight/Copyrightpolicy';
+import ArtistDetail from './Pages/Artist/ArtistDetail';
 import MandeepGhai from './Pages/Artist/MandeepGhai';
 
 
@@ -60,6 +61,7 @@ const AppContent = () => {
         <Route path="/terms" element={<TermsOfService />} />
         <Route path="/copyright" element={<CopyrightPolicy />} />
         <Route path="/artist" element={<MandeepGhai />} />
+        <Route path="/artist/amol-pawar" element={<ArtistDetail />} />
 
         {/* Admin Routes */}
         <Route path="/admin/login" element={<AdminLogin />} />

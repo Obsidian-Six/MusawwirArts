@@ -28,6 +28,7 @@ import BlogDetailPage from './Pages/Blog/BlogDetailPage';
 import FAQ from './Pages/FAQ/FAQ';
 import TermsOfService from './Pages/TermsOfService/TermsOfService';
 import CopyrightPolicy from './Pages/CopyRight/Copyrightpolicy';
+import ArtistDetail from './Pages/Artist/ArtistDetail';
 import MandeepGhai from './Pages/Artist/MandeepGhai';
 
 

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import buildImageUrl from '../../Utils/buildImageUrl';
 import { Link, useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Award, MapPin, GraduationCap, Quote } from 'lucide-react';
 
@@ -9,27 +8,9 @@ const MandeepGhai = () => {
     const sliderRef = useRef(null);
     const navigate = useNavigate();
 
-    // --- URL LOGIC ---
-    const rawApiUrl = import.meta.env.VITE_BASE_URL || window.location.origin;
-    const API_URL = String(rawApiUrl).replace(/\/$/, "");
+    const API_URL = import.meta.env.VITE_BASE_URL ? import.meta.env.VITE_BASE_URL.replace(/\/$/, "") : 'http://localhost:3000/api';
+    const BASE_IMAGE_URL = API_URL.replace('/api', '');
 
-    // Derive server host from API_URL and normalize it to include protocol.
-    let SERVER_URL = API_URL.includes('/api') ? API_URL.split('/api')[0] : API_URL || '';
-    if (!SERVER_URL) SERVER_URL = window.location.origin;
-
-    // If missing protocol but looks like a host, add current protocol.
-    if (!/^https?:\/\//i.test(SERVER_URL)) {
-        if (SERVER_URL.includes('.') || SERVER_URL.includes('localhost')) {
-            SERVER_URL = `${window.location.protocol}//${SERVER_URL}`;
-        } else {
-            console.warn('VITE_BASE_URL appears invalid, falling back to window.location.origin. Value:', rawApiUrl);
-            SERVER_URL = window.location.origin;
-        }
-    }
-
-    // use buildImageUrl for consistent image path resolution
-
-    // --- FETCHING ---
     useEffect(() => {
         window.scrollTo(0, 0);
         fetchPaintings();
@@ -40,6 +21,7 @@ const MandeepGhai = () => {
             const response = await fetch(`${API_URL}/paintings`);
             if (response.ok) {
                 const data = await response.json();
+                // Since the user said "all paintings in database are by this artist", we just use all
                 setPaintings(data);
             }
         } catch (error) {
@@ -50,11 +32,15 @@ const MandeepGhai = () => {
     };
 
     const scrollLeft = () => {
-        if (sliderRef.current) sliderRef.current.scrollBy({ left: -400, behavior: 'smooth' });
+        if (sliderRef.current) {
+            sliderRef.current.scrollBy({ left: -400, behavior: 'smooth' });
+        }
     };
 
     const scrollRight = () => {
-        if (sliderRef.current) sliderRef.current.scrollBy({ left: 400, behavior: 'smooth' });
+        if (sliderRef.current) {
+            sliderRef.current.scrollBy({ left: 400, behavior: 'smooth' });
+        }
     };
 
     return (
@@ -85,6 +71,8 @@ const MandeepGhai = () => {
             {/* --- MAIN BIO SECTION --- */}
             <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-24 py-20 lg:py-32">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
+                    
+                    {/* LEFT COLUMN: INTRO & HIGHLIGHTS */}
                     <div className="lg:col-span-5 space-y-12">
                         <div className="space-y-6">
                             <h2 className="text-2xl md:text-3xl font-serif text-stone-900">Contemporary Indian Artist</h2>
@@ -92,6 +80,7 @@ const MandeepGhai = () => {
                                 Mandeep Kumar Ghai (b. 1984, Punjab, India) is a distinguished contemporary artist whose work embodies a refined dialogue between cultural heritage and modern expression.
                             </p>
                         </div>
+
                         <div className="grid grid-cols-1 gap-8 pt-8">
                             <div className="flex items-start gap-4">
                                 <div className="p-3 bg-stone-50 rounded-full text-[#A6894B]">
@@ -123,13 +112,41 @@ const MandeepGhai = () => {
                         </div>
                     </div>
 
+                    {/* RIGHT COLUMN: DETAILED NARRATIVE */}
                     <div className="lg:col-span-7 space-y-8 text-stone-700 leading-relaxed text-[16px] md:text-[18px]">
-                        <p>Mandeep Kumar Ghai has developed a distinctive visual language defined by depth, balance, and emotional resonance. His works have been exhibited at prominent institutions like the Dhoomimal Art Gallery, New Delhi.</p>
-                        <p>Expanding his international presence, his paintings have been featured in curated exhibitions in London (UK) and Dubai (UAE).</p>
+                        <p>
+                            Mandeep Kumar Ghai has developed a distinctive visual language defined by depth, balance, and emotional resonance. His works have been exhibited at prominent art institutions across India, including the State Museum, Shimla; Indian Habitat Centre, New Delhi; the Academy of Fine Arts, Amritsar; and the Dhoomimal Art Gallery, New Delhi—one of the country’s most respected spaces for modern and contemporary art.
+                        </p>
+                        <p>
+                            Expanding his international presence, his paintings have been featured in curated group exhibitions in London (UK), where his works were selected and presented to a global audience. Mandeep Kumar Ghai’s exhibition profile further includes a group exhibition at Citymax Hotel, Bur Dubai (UAE) in October 2019, reinforcing his engagement with the Middle Eastern art scene.
+                        </p>
+                        <p>
+                            In recent years, he participated in the National Art Camp, Porbandar (Gujarat, 2023), organized by Lalit Kala Akademi, New Delhi—one of India’s most prestigious art institutions. His continued association with Lalit Kala Akademi is reflected through exhibitions and engagements in Chandigarh and New Delhi.
+                        </p>
                         <p className="border-l-4 border-[#A6894B] pl-6 italic text-stone-500 py-2">
                             "His artistic practice is marked by layered textures, refined compositions, and a subtle interplay between narrative and abstraction."
                         </p>
-                        <p>A recipient of the Junior Fellowship (2011–12) from the Ministry of Culture, Government of India, he continues to contribute actively to the contemporary art landscape.</p>
+                        <p>
+                            A recipient of the Junior Fellowship (2011–12) from the Ministry of Culture, Government of India, Mandeep Kumar Ghai continues to contribute actively to the contemporary art landscape through workshops, exhibitions, and curated showcases. His academic research on the celebrated artist Anjolie Ela Menon further highlights his intellectual engagement with modern Indian art.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* --- COLLECTOR'S NOTE SECTION --- */}
+            <div className="bg-stone-50 py-24 md:py-32">
+                <div className="max-w-[1000px] mx-auto px-6 text-center space-y-10">
+                    <Quote className="w-12 h-12 text-[#A6894B] mx-auto opacity-30" />
+                    <h2 className="text-3xl md:text-4xl font-serif text-stone-900 tracking-wide">Collector’s Note</h2>
+                    <p className="text-xl text-stone-600 font-light leading-relaxed">
+                        Mandeep Kumar Ghai’s works are held in private collections and are increasingly recognized for their investment value. With a limited and carefully curated body of work, each piece offers exclusivity and enduring appeal—ideal for luxury interiors and discerning collectors.
+                    </p>
+                    <div className="pt-8">
+                        <span className="text-[11px] uppercase tracking-[0.3em] text-stone-400 block mb-2">Presented by</span>
+                        <h3 className="text-2xl font-serif text-[#A6894B]">Musawwir Art</h3>
+                        <p className="mt-4 text-stone-500 text-sm max-w-xl mx-auto">
+                            Curated with a vision to connect exceptional artistic talent with global collectors, Musawwir Art proudly presents Mandeep Kumar Ghai—where authenticity, craftsmanship, and artistic excellence converge.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -143,10 +160,16 @@ const MandeepGhai = () => {
                             <h2 className="text-3xl md:text-5xl font-serif text-stone-900 tracking-tight">The Works of Mandeep Kumar Ghai</h2>
                         </div>
                         <div className="flex gap-4">
-                            <button onClick={scrollLeft} className="w-12 h-12 rounded-full border border-stone-200 flex items-center justify-center hover:bg-stone-900 hover:text-white transition-all">
+                            <button 
+                                onClick={scrollLeft}
+                                className="w-12 h-12 rounded-full border border-stone-200 flex items-center justify-center hover:bg-stone-900 hover:text-white transition-all"
+                            >
                                 <ChevronLeft size={20} />
                             </button>
-                            <button onClick={scrollRight} className="w-12 h-12 rounded-full border border-stone-200 flex items-center justify-center hover:bg-stone-900 hover:text-white transition-all">
+                            <button 
+                                onClick={scrollRight}
+                                className="w-12 h-12 rounded-full border border-stone-200 flex items-center justify-center hover:bg-stone-900 hover:text-white transition-all"
+                            >
                                 <ChevronRight size={20} />
                             </button>
                         </div>
@@ -160,6 +183,7 @@ const MandeepGhai = () => {
                         <div 
                             ref={sliderRef}
                             className="flex overflow-x-auto gap-8 pb-12 snap-x snap-mandatory hide-scrollbar scroll-smooth"
+                            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                         >
                             {paintings.length > 0 ? (
                                 paintings.map((painting) => (
@@ -170,16 +194,9 @@ const MandeepGhai = () => {
                                     >
                                         <div className="relative aspect-[3/4] overflow-hidden bg-stone-100 mb-6">
                                             <img 
-                                                src={buildImageUrl(painting.imageUrl)} 
+                                                src={`${BASE_IMAGE_URL}${painting.imageUrl}`} 
                                                 alt={painting.title} 
                                                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                                                onError={(e) => {
-                                                    try {
-                                                      if (e?.target?.dataset?.fallback === 'true') return;
-                                                      e.target.dataset.fallback = 'true';
-                                                      e.target.src = buildImageUrl('');
-                                                    } catch (err) {console.error('Error loading image:', err);}
-                                                }}
                                             />
                                             <div className="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/10 transition-colors duration-500"></div>
                                         </div>
@@ -202,9 +219,16 @@ const MandeepGhai = () => {
             {/* --- CALL TO ACTION --- */}
             <div className="max-w-[1400px] mx-auto px-6 mb-20">
                 <div className="bg-stone-900 text-white p-12 md:p-20 text-center relative overflow-hidden rounded-sm">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-[#A6894B]/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
                     <div className="relative z-10">
                         <h2 className="text-3xl md:text-4xl font-serif mb-8 tracking-wide">Acquire an Original Mandeep Kumar Ghai</h2>
-                        <Link to="/paintings" className="inline-block px-10 py-4 bg-[#A6894B] text-white uppercase tracking-[0.2em] text-xs font-bold hover:bg-[#8e7540] transition-colors">
+                        <p className="text-stone-400 max-w-xl mx-auto mb-10 font-light">
+                            Explore the full collection and discover the perfect piece for your space. Worldwide shipping available for all original artworks.
+                        </p>
+                        <Link 
+                            to="/paintings" 
+                            className="inline-block px-10 py-4 bg-[#A6894B] text-white uppercase tracking-[0.2em] text-xs font-bold hover:bg-[#8e7540] transition-colors"
+                        >
                             View All Paintings
                         </Link>
                     </div>
@@ -212,9 +236,16 @@ const MandeepGhai = () => {
             </div>
 
             <style dangerouslySetInnerHTML={{ __html: `
-                .hide-scrollbar::-webkit-scrollbar { display: none; }
-                @keyframes fade-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-                .animate-fade-in { animation: fade-in 1s ease-out forwards; }
+                .hide-scrollbar::-webkit-scrollbar {
+                    display: none;
+                }
+                @keyframes fade-in {
+                    from { opacity: 0; transform: translateY(10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                .animate-fade-in {
+                    animation: fade-in 1s ease-out forwards;
+                }
             `}} />
         </div>
     );

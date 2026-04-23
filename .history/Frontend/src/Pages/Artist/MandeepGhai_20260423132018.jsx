@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import buildImageUrl from '../../Utils/buildImageUrl';
 import { Link, useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Award, MapPin, GraduationCap, Quote } from 'lucide-react';
 
@@ -27,7 +26,24 @@ const MandeepGhai = () => {
         }
     }
 
-    // use buildImageUrl for consistent image path resolution
+    const cleanImagePath = (path) => {
+        if (!path) return "";
+        let s = String(path);
+        s = s.replace(/^\/+/, ''); // remove leading slashes
+        s = s.replace(/public\/uploads\//gi, '');
+        s = s.replace(/public\//gi, '');
+        s = s.replace(/(?:uploads\/)+/gi, 'uploads/');
+        s = s.replace(/^uploads\//i, '');
+        return s;
+    };
+
+    const getFullUrl = (path) => {
+        if (!path) return "/placeholder-banner.jpg";
+        if (String(path).startsWith('http') || String(path).startsWith('blob:') || String(path).startsWith('data:')) return path;
+
+        const clean = cleanImagePath(path);
+        return `${SERVER_URL}/uploads/${clean}`;
+    };
 
     // --- FETCHING ---
     useEffect(() => {
@@ -170,16 +186,9 @@ const MandeepGhai = () => {
                                     >
                                         <div className="relative aspect-[3/4] overflow-hidden bg-stone-100 mb-6">
                                             <img 
-                                                src={buildImageUrl(painting.imageUrl)} 
+                                                src={getFullUrl(painting.imageUrl)} 
                                                 alt={painting.title} 
                                                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                                                onError={(e) => {
-                                                    try {
-                                                      if (e?.target?.dataset?.fallback === 'true') return;
-                                                      e.target.dataset.fallback = 'true';
-                                                      e.target.src = buildImageUrl('');
-                                                    } catch (err) {console.error('Error loading image:', err);}
-                                                }}
                                             />
                                             <div className="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/10 transition-colors duration-500"></div>
                                         </div>

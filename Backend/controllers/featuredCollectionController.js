@@ -1,4 +1,4 @@
-import FeaturedCollection from '../models/FeaturedCollectionModel.js';
+import FeaturedCollection from '../Models/FeaturedCollectionModel.js';
 import sharp from 'sharp';
 import fs from 'fs/promises';
 import path from 'path';

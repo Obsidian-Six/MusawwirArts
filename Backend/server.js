@@ -48,7 +48,7 @@ import HomepageRoutes from './Routes/HomePageRoutes.js';
 import CategoryRoutes from './Routes/CategoryRoutes.js';
 import TestimonialRoutes from './Routes/TestimonialRoutes.js';
 import BlogRoutes from './Routes/BlogRoutes.js';
-import FeaturedCollectionRoutes from './routes/FeaturedCollectionRoutes.js';
+import FeaturedCollectionRoutes from './Routes/FeaturedCollectionRoutes.js';
 
 // Removed the redundant app.use('/uploads') from here to prevent path conflicts
 
