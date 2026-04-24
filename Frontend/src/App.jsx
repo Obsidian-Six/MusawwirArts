@@ -29,6 +29,8 @@ import FAQ from './Pages/FAQ/FAQ';
 import TermsOfService from './Pages/TermsOfService/TermsOfService';
 import CopyrightPolicy from './Pages/CopyRight/Copyrightpolicy';
 import MandeepGhai from './Pages/Artist/MandeepGhai';
+import SculpturesPage from './Pages/SculpturesPage';
+import SculptureDetailPage from './Pages/SculptureDetailPage';
 
 
 // Admin Components
@@ -54,6 +56,8 @@ const AppContent = () => {
         <Route path="/art-maintenance" element={<ArtMaintenance />} />
         <Route path="/paintings" element={<PaintingsPage />} />
         <Route path="/paintings/:id" element={<ProductDetailsPage />} />
+        <Route path="/sculptures" element={<SculpturesPage />} />
+        <Route path="/sculptures/:id" element={<SculptureDetailPage />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/blog/:slug" element={<BlogDetailPage />} />
         <Route path="/faq" element={<FAQ />} />

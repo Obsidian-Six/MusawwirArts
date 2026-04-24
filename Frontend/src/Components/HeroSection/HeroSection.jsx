@@ -76,6 +76,9 @@ const getFullUrl = (path) => {
       <img
         src={src}
         alt={alt}
+        decoding="async"
+        loading="eager"
+        fetchpriority="high"
         className={className}
         onError={(e) => {
           if (fallbackIndex + 1 < candidates.length) {

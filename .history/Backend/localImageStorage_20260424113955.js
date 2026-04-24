@@ -6,12 +6,14 @@ import sharp from 'sharp';
  * @param {string} tempPath - The temporary path from Multer (req.file.path)
  * @param {string} folder - Subfolder name (e.g., 'paintings' or 'gallery')
  * @returns {Promise<Object>} - Object containing the secure_url
+ * 
  */
 export const uploadToLocalStorage = async (tempPath, folder) => {
   try {
     const fileName = `art-${Date.now()}-${Math.round(Math.random() * 1e9)}.webp`;
     const targetDir = path.join('public', 'uploads', folder);
     const finalPath = path.join(targetDir, fileName);
+
     // Ensure directory exists
     if (!fs.existsSync(targetDir)) {
       fs.mkdirSync(targetDir, { recursive: true });

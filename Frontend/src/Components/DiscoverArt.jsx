@@ -103,11 +103,13 @@ const DiscoverArt = ({ onArtClick }) => {
               onClick={() => onArtClick({ title: product.title, imageUrl: getFullImageUrl(product.imageUrl) })} // Added the popup trigger
             >
               <div className="relative bg-white p-2 md:p-3 shadow-sm border border-slate-100 mb-3 md:mb-4 rounded-md">
-                <div className="aspect-[4/5] overflow-hidden rounded-sm relative bg-stone-50">
+                <div className="h-[250px] md:h-[300px] flex items-center justify-center overflow-hidden rounded-sm relative bg-stone-50">
                   <img 
                     src={getFullImageUrl(product.imageUrl)} 
                     alt={product.title} 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
+                    decoding="async"
+                    className="max-w-full max-h-full w-auto h-auto object-contain transition-transform duration-700 group-hover:scale-105"
                     onError={(e) => { e.target.src = 'https://placehold.co/400x500?text=Art+Preview'; }}
                   />
                   <button 

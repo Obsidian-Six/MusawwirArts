@@ -17,12 +17,12 @@ const OverviewComponent = ({
     if (path.startsWith('http')) return path;
     const API_URL = import.meta.env.VITE_BASE_URL.replace(/\/$/, "");
     const rootUrl = API_URL.split('/api')[0].replace(/\/$/, "");
-    const fileName = path.split('\\').pop().split('/').pop();
-    return `${rootUrl}/uploads/paintings/${fileName}`;
+    const cleanPath = path.replace(/\\/g, '/');
+    return `${rootUrl}${cleanPath.startsWith('/') ? '' : '/'}${cleanPath}`;
   };
 
   return (
-    <div className="h-[calc(100vh-120px)] flex flex-col justify-between overflow-hidden animate-in fade-in slide-in-from-bottom-8 duration-1000">
+    <div className="min-h-full lg:h-[calc(100vh-120px)] flex flex-col justify-between animate-in fade-in slide-in-from-bottom-8 duration-1000 pb-10 lg:pb-0">
       
       {/* 1. ELEGANT WELCOME HEADER */}
       <header className="text-center space-y-2 max-w-2xl mx-auto pt-2 flex-shrink-0">

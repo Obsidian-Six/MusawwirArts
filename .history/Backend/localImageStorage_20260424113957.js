@@ -12,6 +12,7 @@ export const uploadToLocalStorage = async (tempPath, folder) => {
     const fileName = `art-${Date.now()}-${Math.round(Math.random() * 1e9)}.webp`;
     const targetDir = path.join('public', 'uploads', folder);
     const finalPath = path.join(targetDir, fileName);
+
     // Ensure directory exists
     if (!fs.existsSync(targetDir)) {
       fs.mkdirSync(targetDir, { recursive: true });

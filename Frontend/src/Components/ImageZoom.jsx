@@ -59,6 +59,9 @@ const ImageZoom = ({ src, alt, onClick }) => {
         <img
           src={src}
           alt={alt}
+          decoding="async"
+          loading="eager"
+          fetchpriority="high"
           className="w-full h-auto max-h-[80vh] object-contain mx-auto transition-opacity duration-300"
         />
 

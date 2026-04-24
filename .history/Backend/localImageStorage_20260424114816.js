@@ -42,7 +42,8 @@ export const uploadToLocalStorage = async (tempPath, folder) => {
     console.error('Local storage upload failed:', error);
     throw new Error('Local storage upload failed: ' + error.message);
   }
-};
+}; 
+
 
 export const deleteFromLocalStorage = async (relativeUrl) => {
   try {

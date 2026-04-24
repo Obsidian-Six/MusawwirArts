@@ -7,18 +7,26 @@ const CategorySection = () => {
   const [loading, setLoading] = useState(true);
 
   // Helper to handle image paths from backend
-const getFullImageUrl = (path) => {
-    if (!path) return "/placeholder-art.jpg";
-    if (path.startsWith('http')) return path;
+  const getFullImageUrl = (path) => {
+    const PLACEHOLDER = "/placeholder-art.jpg";
+    if (!path) return PLACEHOLDER;
+    const s = String(path).trim();
+    if (/^(https?:)?\/\//i.test(s) || /^data:|^blob:/i.test(s)) return s;
 
-    const baseUrl = import.meta.env.VITE_BASE_URL.split('/api')[0].replace(/\/$/, "");
+    // If already site-root uploads path, return as root-relative so frontend serves it
+    if (s.startsWith('/uploads')) return s;
 
-    // 2. Clean the path: Extract just the filename to avoid pathing issues between Windows/Linux
-    const fileName = path.split('\\').pop().split('/').pop();
+    // Build baseUrl: prefer VITE_BASE_URL origin, otherwise window.location.origin
+    let raw = import.meta.env.VITE_BASE_URL || '';
+    raw = String(raw);
+    let base = raw ? raw.split('/api')[0].replace(/\/$/, '') : window.location.origin.replace(/\/$/, '');
 
-    // 3. Return the exact absolute URL
-    return `${baseUrl}/uploads/paintings/${fileName}`;
-};
+    // Extract filename or uploads subpath
+    let fileName = s.split('\\').pop().split('/').pop();
+    if (!fileName) return PLACEHOLDER;
+
+    return `${base}/uploads/paintings/${fileName}`;
+  };
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -28,7 +36,7 @@ const getFullImageUrl = (path) => {
         const response = await fetch(`${import.meta.env.VITE_BASE_URL}/paintings`);
         const result = await response.json();
 
-        if (response.ok) {
+          if (response.ok) {
           // Normalize result to an array of paintings regardless of response shape
           const items = result?.data || (Array.isArray(result) ? result : []);
 
@@ -57,6 +65,49 @@ const getFullImageUrl = (path) => {
               });
             }
           });
+
+          // Prefer a specific painting id for the 2nd card if present (requested by product)
+          const preferredId = '69e0d76240138e65c81c094e';
+          const preferredItem = items.find(it => it && (it._id === preferredId || it.id === preferredId));
+
+          if (preferredItem) {
+            const catName = (typeof preferredItem.category === 'string')
+              ? preferredItem.category
+              : (preferredItem.category?.name || preferredItem.category?.slug || 'Folk');
+
+            const preferredCard = {
+              title: catName,
+              desc: `Explore our collection of ${catName} masterpieces`,
+              image: getFullImageUrl(preferredItem.imageUrl),
+              link: `/paintings?category=${encodeURIComponent(catName)}`
+            };
+
+            if (uniqueCategories.length >= 2) uniqueCategories[1] = preferredCard;
+            else uniqueCategories.push(preferredCard);
+          } else {
+            // Fallback: Force the 2nd card to show 'Folk' if a Folk painting exists in the dataset.
+            const folkItem = items.find(it => {
+              if (!it) return false;
+              const cat = (typeof it.category === 'string') ? it.category : (it.category?.name || it.category?.slug || '');
+              return !!cat && cat.toString().toLowerCase().includes('folk');
+            });
+
+            if (folkItem) {
+              const folkCategoryName = (typeof folkItem.category === 'string')
+                ? folkItem.category
+                : (folkItem.category?.name || folkItem.category?.slug || 'Folk');
+
+              const folkCard = {
+                title: folkCategoryName,
+                desc: `Explore our collection of ${folkCategoryName} masterpieces`,
+                image: getFullImageUrl(folkItem.imageUrl),
+                link: `/paintings?category=${encodeURIComponent(folkCategoryName)}`
+              };
+
+              if (uniqueCategories.length >= 2) uniqueCategories[1] = folkCard;
+              else uniqueCategories.push(folkCard);
+            }
+          }
 
           setCategories(uniqueCategories.slice(0, 4)); // Limit to top 4
         } else {

@@ -135,11 +135,13 @@ const SoldPaintings = () => {
               className="flex-shrink-0 w-[280px] md:w-[350px] snap-start group"
             >
               {/* Image Frame */}
-              <div className="aspect-[4/5] bg-stone-50 overflow-hidden mb-6 shadow-sm group-hover:shadow-md transition-shadow duration-500">
+              <div className="h-[350px] md:h-[450px] flex items-center justify-center bg-stone-50 overflow-hidden mb-6 shadow-sm group-hover:shadow-md transition-shadow duration-500 border border-stone-100/50">
                 <img 
                   src={painting.image} 
                   alt={painting.title}
-                  className="w-full h-full object-cover grayscale-[0.1] group-hover:grayscale-0 transition-all duration-700"
+                  loading="lazy"
+                  decoding="async"
+                  className="max-w-full max-h-full w-auto h-auto object-contain grayscale-[0.1] group-hover:grayscale-0 transition-all duration-700"
                 />
               </div>
 

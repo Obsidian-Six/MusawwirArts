@@ -123,10 +123,9 @@ const PaintingsPage = () => {
 
             {/* Category Filter */}
             <div className="mb-12 border-b border-stone-100 pb-8 flex flex-col items-center">
-                <div 
-                    className={`flex flex-wrap justify-center gap-x-4 md:gap-x-8 gap-y-4 overflow-hidden transition-all duration-700 ease-in-out ${
-                        isCategoriesExpanded ? 'max-h-[1000px] opacity-100' : 'max-h-[32px] md:max-h-[40px] opacity-90'
-                    }`}
+                <div
+                    className={`flex flex-wrap justify-center gap-x-4 md:gap-x-8 gap-y-4 overflow-hidden transition-all duration-700 ease-in-out ${isCategoriesExpanded ? 'max-h-[1000px] opacity-100' : 'max-h-[32px] md:max-h-[40px] opacity-90'
+                        }`}
                 >
                     {dynamicCategories.map(cat => (
                         <button
@@ -141,9 +140,9 @@ const PaintingsPage = () => {
                         </button>
                     ))}
                 </div>
-                
+
                 {dynamicCategories.length > 5 && (
-                    <button 
+                    <button
                         onClick={() => setIsCategoriesExpanded(!isCategoriesExpanded)}
                         className="mt-6 text-[9px] uppercase tracking-[0.3em] text-stone-400 hover:text-stone-900 transition-all font-medium border-b border-transparent hover:border-stone-900 pb-0.5"
                     >
@@ -152,54 +151,56 @@ const PaintingsPage = () => {
                 )}
             </div>
 
-            {/* Paintings Grid */}
             {filteredPaintings.length > 0 ? (
                 <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 md:gap-x-8 gap-y-10 md:gap-y-16">
                     {currentItems.map((art) => (
                         <Link
                             key={art._id}
                             to={`/paintings/${art._id}`}
-                            className="group cursor-pointer block"
+                            className="group cursor-pointer flex flex-col h-full"
                         >
-                            {/* Logic updated to check the orientation field from DB */}
-                            <div
-                                className={`overflow-hidden bg-stone-50 mb-3 md:mb-4 relative transition-all duration-500 ${
-                                    (
-                                        art.orientation === 'landscape' ||
-                                        ((art.category?.slug || '').toLowerCase().includes('landscape')) ||
-                                        ((art.category?.name || '').toLowerCase().includes('landscape')) ||
-                                        ((art.category?.parent?.slug || '').toLowerCase().includes('landscape')) ||
-                                        ((art.category?.parent?.name || '').toLowerCase().includes('landscape'))
-                                    ) ? 'aspect-video' : 'aspect-square'
-                                }`}
-                            >
+                            {/* 1. bg-white ensures a pure white background 
+                                2. items-center perfectly centers the painting vertically and horizontally
+                                3. Fixed heights keep the grid perfectly aligned
+                            */}
+                            <div className="w-full h-[240px] sm:h-[300px] lg:h-[380px] flex items-center justify-center mb-4 md:mb-6 relative overflow-hidden bg-white">
                                 <img
                                     src={getFullImageUrl(art.imageUrl)}
                                     alt={art.title}
                                     loading="lazy"
-                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                    decoding="async"
+                                    // Removed the shadow here to make it perfectly flat and minimal, 
+                                    // relying purely on the white space for framing.
+                                    className="max-w-full max-h-full w-auto h-auto object-contain duration-700 "
                                 />
-                                <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-500" />
+                                {/* Very subtle hover overlay to indicate it's clickable without being intrusive */}
+                                <div className="absolute inset-0 bg-black/[0.01] group-hover:bg-transparent transition-colors duration-500 pointer-events-none" />
                             </div>
 
-                            <div className="flex flex-col gap-1 font-sans">
-                                <h3 className="text-[13px] md:text-sm uppercase tracking-widest text-gray-900 leading-tight group-hover:text-[#A6894B] transition-colors font-bold">
+                            {/* Text Container */}
+                            <div className="flex flex-col gap-1.5 font-sans mt-auto pt-2">
+                                {/* Title: Slightly larger, uppercase, with letter spacing for a premium feel */}
+                                <h3 className="text-[12px] md:text-[14px] uppercase tracking-[0.15em] text-gray-900 leading-snug group-hover:text-[#A6894B] transition-colors font-medium">
                                     {art.title}
                                 </h3>
 
-                                <p className="text-[10px] text-[#A6894B] tracking-tighter font-bold">
+                                {/* Category: Small, subtle, and clean */}
+                                <p className="text-[10px] md:text-[11px] text-[#A6894B] tracking-widest uppercase font-semibold">
                                     {art.category?.parent?.name
                                         ? `${art.category.parent.name} • ${art.category.name}`
                                         : (art.category?.name || 'Artwork')
                                     }
                                 </p>
 
-                                <p className="text-[11px] md:text-xs text-stone-900 tracking-tighter italic">
-                                    {art.medium}
-                                </p>
-                                <p className="text-[9px] md:text-[11px] text-stone-400 tracking-tighter opacity-80">
-                                    Size: {art.dimensions}
-                                </p>
+                                {/* Medium & Size: Grouped slightly with a subtle divider or just clean lines */}
+                                <div className="flex flex-col mt-0.5 border-t border-stone-50 pt-1.5">
+                                    <p className="text-[11px] md:text-[12px] text-stone-600 tracking-tight italic leading-relaxed">
+                                        {art.medium}
+                                    </p>
+                                    <p className="text-[10px] md:text-[11px] text-stone-400 tracking-wide font-light">
+                                        {art.dimensions}
+                                    </p>
+                                </div>
                             </div>
                         </Link>
                     ))}
@@ -209,6 +210,7 @@ const PaintingsPage = () => {
                     No artworks found in this category.
                 </div>
             )}
+
 
             {/* Pagination */}
             {totalPages > 1 && (

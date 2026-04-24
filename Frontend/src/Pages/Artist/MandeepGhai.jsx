@@ -168,11 +168,13 @@ const MandeepGhai = () => {
                                         className="flex-shrink-0 w-[280px] md:w-[400px] snap-start group cursor-pointer"
                                         onClick={() => navigate(`/paintings/${painting._id}`)}
                                     >
-                                        <div className="relative aspect-[3/4] overflow-hidden bg-stone-100 mb-6">
+                                        <div className="relative h-[400px] md:h-[500px] flex items-center justify-center overflow-hidden bg-stone-50 mb-6 border border-stone-100/50">
                                             <img 
                                                 src={buildImageUrl(painting.imageUrl)} 
                                                 alt={painting.title} 
-                                                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                                loading="lazy"
+                                                decoding="async"
+                                                className="max-w-full max-h-full w-auto h-auto object-contain transition-transform duration-1000 group-hover:scale-105"
                                                 onError={(e) => {
                                                     try {
                                                       if (e?.target?.dataset?.fallback === 'true') return;
@@ -181,7 +183,7 @@ const MandeepGhai = () => {
                                                     } catch (err) {console.error('Error loading image:', err);}
                                                 }}
                                             />
-                                            <div className="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/10 transition-colors duration-500"></div>
+                                            <div className="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/5 transition-colors duration-500"></div>
                                         </div>
                                         <div className="space-y-1">
                                             <h3 className="text-lg font-bold text-stone-900 group-hover:text-[#A6894B] transition-colors">{painting.title}</h3>

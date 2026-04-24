@@ -11,7 +11,7 @@ const getUploadDir = (file) => {
   if (file.fieldname === 'authorImage') {
     return 'public/uploads/testimonials';
   }
-  return 'public/uploads/paintings';
+  return 'public/uploads/temp';
 };
 
 // 2. Storage Configuration

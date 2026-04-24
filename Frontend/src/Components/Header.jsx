@@ -45,7 +45,7 @@ const Header = () => {
                         <div className="hidden md:flex items-center">
                             <nav className="flex items-center gap-8 lg:gap-14 text-[13px] font-bold uppercase tracking-[0.2em] text-gray-800">
                                 <Link to='/paintings' className="hover:text-[#A6894B] transition-colors underline-animate">Paintings</Link>
-                                <Link to='/artist' className="hover:text-[#A6894B] transition-colors underline-animate">Artist</Link>
+                                <Link to='/sculptures' className="hover:text-[#A6894B] transition-colors underline-animate">Sculptures</Link>
                                 <Link to="/aboutus" className="hover:text-[#A6894B] transition-colors underline-animate">About Us</Link>
                             </nav>
                         </div>
@@ -70,7 +70,8 @@ const Header = () => {
 
                         {/* RIGHT: Blog Link Pinned Right */}
                         <div className="flex items-center justify-end text-gray-800">
-                            <nav className="hidden md:block text-[13px] font-bold uppercase tracking-[0.2em]">
+                            <nav className="hidden md:flex items-center gap-8 lg:gap-14 text-[13px] font-bold uppercase tracking-[0.2em]">
+                                <Link to='/artist' className="hover:text-[#A6894B] transition-colors underline-animate">Artist</Link>
                                 <Link to="/blog" className="hover:text-[#A6894B] transition-colors underline-animate">Blog</Link>
                             </nav>
                         </div>
@@ -79,8 +80,9 @@ const Header = () => {
                     {/* 3. MOBILE ONLY NAVIGATION */}
                     {/* 3. MOBILE ONLY NAVIGATION */}
                     <nav className="flex md:hidden justify-center items-center mt-4 pt-3 border-t border-gray-50 text-[10px] font-bold uppercase tracking-[0.15em] text-gray-600">
-                        <div className="flex gap-5 sm:gap-8">
+                        <div className="flex flex-wrap gap-5 sm:gap-8 justify-center">
                             <Link to="/paintings" className="hover:text-[#A6894B]">Paintings</Link>
+                            <Link to="/sculptures" className="hover:text-[#A6894B]">Sculptures</Link>
                             <Link to="/artist" className="hover:text-[#A6894B]">Artist</Link>
                             <Link to="/aboutus" className="hover:text-[#A6894B]">About Us</Link>
                             <Link to="/blog" className="hover:text-[#A6894B]">Blog</Link>

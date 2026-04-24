@@ -167,11 +167,13 @@ const ProductExtras = ({ currentProduct }) => {
                                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                                 className="group block space-y-5"
                             >
-                                <div className="aspect-[4/5] overflow-hidden bg-stone-100 shadow-sm transition-shadow group-hover:shadow-md">
+                                <div className="h-[250px] md:h-[320px] flex items-center justify-center overflow-hidden bg-stone-50 shadow-sm transition-shadow group-hover:shadow-md border border-stone-100/50">
                                     <img
                                         src={getFullImageUrl(art.imageUrl)}
                                         alt={art.title}
-                                        className="w-full h-full object-cover transition-transform duration-[1.2s] group-hover:scale-105"
+                                        loading="lazy"
+                                        decoding="async"
+                                        className="max-w-full max-h-full w-auto h-auto object-contain transition-transform duration-[1.2s] group-hover:scale-105"
                                     />
                                 </div>
 

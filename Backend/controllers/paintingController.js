@@ -53,10 +53,31 @@ export const createPainting = async (req, res) => {
 export const updatePainting = async (req, res) => {
     try {
         const { id } = req.params;
+        const oldPainting = await Painting.findById(id);
+        if (!oldPainting) return res.status(404).json({ message: "Painting not found" });
+
         let updateData = { ...req.body };
 
         if (req.file) {
-            updateData.imageUrl = `/uploads/paintings/${req.file.filename}`;
+            const fileName = `processed-${Date.now()}.webp`;
+            const outputPath = path.join('public', 'uploads', 'paintings', fileName);
+
+            // Process image with Sharp
+            await sharp(req.file.path)
+                .resize(2000, 2000, { fit: 'inside', withoutEnlargement: true })
+                .webp({ quality: 80 })
+                .toFile(outputPath);
+
+            // Clean up temp file
+            await fs.unlink(req.file.path);
+
+            // Delete old image file if it exists
+            if (oldPainting.imageUrl) {
+                const oldFilePath = path.join(process.cwd(), 'public', oldPainting.imageUrl);
+                try { await fs.unlink(oldFilePath); } catch (e) { console.log("Old file not found for replacement"); }
+            }
+
+            updateData.imageUrl = `/uploads/paintings/${fileName}`;
         }
 
         const updatedPainting = await Painting.findByIdAndUpdate(
@@ -68,10 +89,9 @@ export const updatePainting = async (req, res) => {
             populate: { path: 'parent', select: 'name' }
         });
 
-        if (!updatedPainting) return res.status(404).json({ message: "Painting not found" });
-
-        res.status(200).json(updatedPainting);
+        res.status(200).json({ success: true, data: updatedPainting });
     } catch (error) {
+        console.error("Update Error:", error);
         res.status(500).json({ message: error.message });
     }
 };

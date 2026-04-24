@@ -21,6 +21,12 @@ if (!fs.existsSync(uploadDir)) {
     console.log(`✅ Created upload directory at: ${uploadDir}`);
 }
 
+const sculptureDir = path.join(__dirname, 'public', 'uploads', 'sculptures');
+if (!fs.existsSync(sculptureDir)) {
+    fs.mkdirSync(sculptureDir, { recursive: true });
+    console.log(`✅ Created sculpture directory at: ${sculptureDir}`);
+}
+
 app.use(helmet({
     crossOriginResourcePolicy: { policy: "cross-origin" },
     crossOriginEmbedderPolicy: false
@@ -49,6 +55,7 @@ import CategoryRoutes from './Routes/CategoryRoutes.js';
 import TestimonialRoutes from './Routes/TestimonialRoutes.js';
 import BlogRoutes from './Routes/BlogRoutes.js';
 import FeaturedCollectionRoutes from './Routes/FeaturedCollectionRoutes.js';
+import SculptureRoutes from './Routes/SculptureRoutes.js';
 
 // Removed the redundant app.use('/uploads') from here to prevent path conflicts
 
@@ -61,6 +68,7 @@ app.use('/api/categories', CategoryRoutes);
 app.use('/api/testimonials', TestimonialRoutes);
 app.use('/api/blogs', BlogRoutes);
 app.use('/api/featured-collections', FeaturedCollectionRoutes);
+app.use('/api/sculptures', SculptureRoutes);
 
 app.use((err, req, res, next) => {
     console.error("Global Error Handler:", err.message);

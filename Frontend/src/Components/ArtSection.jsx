@@ -27,11 +27,13 @@ const ArtCard = ({ title, imageUrl, onArtClick }) => {
     >
       {/* Container with shadow and border for that 'Fine Art' feel */}
       <div className="relative bg-white p-2 md:p-3 shadow-sm border border-stone-100 mb-3 md:mb-5 rounded-sm transition-all duration-500 group-hover:shadow-md">
-        <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-stone-50">
+        <div className="relative h-[250px] md:h-[350px] flex items-center justify-center overflow-hidden rounded-sm bg-stone-50">
           <img 
             src={getFullImageUrl(imageUrl)} 
             alt={title} 
-            className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
+            loading="lazy"
+            decoding="async"
+            className="max-w-full max-h-full w-auto h-auto object-contain transition-transform duration-1000 ease-out group-hover:scale-105"
             onError={(e) => { 
                 e.target.src = 'https://placehold.co/400x500?text=Art+Preview'; 
                 e.target.onerror = null; 
