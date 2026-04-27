@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import ContactForm from '../../Components/ContactForm';
-import { Heart, Share2, Mail, MessageCircle, Maximize2, X, ShieldCheck } from 'lucide-react';
+import {  X, ShieldCheck } from 'lucide-react';
 import ProductExtras from './ProductExtras';
 import ImageZoom from '../../Components/ImageZoom';
 
@@ -158,21 +158,7 @@ const ProductDetailsPage = () => {
             >
               Request for Price
             </button>
-            <button className="px-6 border border-stone-200 rounded-sm hover:bg-stone-50 transition-colors group">
-              <Heart size={20} className="text-stone-400 group-hover:text-red-500 transition-colors" />
-            </button>
-          </div>
 
-          {/* Social Share & Footer Details */}
-          <div className="pt-10 space-y-6">
-            <div className="flex items-center justify-between border-t border-stone-100 pt-6">
-              <span className="text-[11px] text-stone-400 uppercase tracking-[0.1em]">Share this work:</span>
-              <div className="flex gap-4">
-                <button className="text-stone-400 hover:text-stone-900 transition-all"><Share2 size={18} /></button>
-                <button className="text-stone-400 hover:text-green-600 transition-all"><MessageCircle size={18} /></button>
-                <button className="text-stone-400 hover:text-stone-900 transition-all"><Mail size={18} /></button>
-              </div>
-            </div>
           </div>
         </div>
       </div>

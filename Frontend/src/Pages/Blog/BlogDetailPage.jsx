@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { 
-  ChevronRight, Calendar, User, ArrowLeft 
+import {
+  ChevronRight, Calendar, User, ArrowLeft
 } from 'lucide-react';
+
+import BlogsSidebarForm from '../../Components/blogs/BlogsSideForm';
 
 const BlogDetailPage = () => {
   const { slug } = useParams();
@@ -10,7 +12,7 @@ const BlogDetailPage = () => {
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
   const [relatedBlogs, setRelatedBlogs] = useState([]);
-  
+
   const API_URL = import.meta.env.VITE_BASE_URL.replace(/\/$/, "");
   const BASE_URL = API_URL.split('/api')[0].replace(/\/$/, "");
 
@@ -53,71 +55,68 @@ const BlogDetailPage = () => {
 
   /**
    * Renders paragraphs and injects images from the array.
-   * If there are more images than paragraphs, the rest are shown in a grid at the end.
    */
   const renderArtGalleryContent = () => {
     if (!blog.content) return null;
 
     const paragraphs = blog.content.split(/\n\s*\n/);
     const allImages = blog.images || [];
-    
-    // We use a counter to keep track of which images we've already shown
-    let displayedImageCount = 0;
+
+    // Inline images: skip index 0 (hero), cap at 5
+    const inlineImages = allImages.slice(1, 6);
+    const totalParagraphs = paragraphs.length;
+    const totalImages = inlineImages.length;
+
+    // Distribute images evenly across paragraphs
+    // e.g. 4 images across 8 paragraphs → image at para 0, 2, 4, 6
+    const imageAtIndex = {};
+    for (let i = 0; i < totalImages; i++) {
+      const paraIdx = Math.min(
+        Math.round((i / totalImages) * totalParagraphs),
+        totalParagraphs - 1
+      );
+      imageAtIndex[paraIdx] = inlineImages[i];
+    }
 
     return (
-      <>
+      <div className="space-y-0">
         {paragraphs.map((para, index) => {
-          // Determine if we should show an image after this paragraph
-          // We show images 1, 2, 3... after paragraphs 1, 2, 3...
-          const imageToShow = allImages[index + 1]; // +1 because index 0 is the hero image
-          if (imageToShow) displayedImageCount++;
+          const imageToShow = imageAtIndex[index];
 
           return (
-            <React.Fragment key={index}>
-              <p className="mb-10 leading-[2] text-stone-700">{para}</p>
-              
+            <div key={index} className="mb-12">
               {imageToShow && (
-                <div className="my-16 group animate-in fade-in slide-in-from-bottom-10 duration-1000">
-                  <div className="rounded-2xl overflow-hidden bg-stone-100 shadow-2xl">
-                    <img 
-                      src={`${BASE_URL}${imageToShow}`} 
-                      alt={`Artwork detail ${index + 1}`}
-                      className="w-full h-auto object-cover max-h-[700px] hover:scale-105 transition-transform duration-[3s]"
-                    />
-                  </div>
-                  <p className="mt-4 text-[10px] text-stone-400 font-serif italic text-center uppercase tracking-widest">
-                    Study of {blog.title} — Detail No. {index + 1}
-                  </p>
+                <div className="mb-6 rounded-xl overflow-hidden shadow-md w-full aspect-[4/3] bg-stone-50">
+                  <img
+                    src={`${BASE_URL}${imageToShow}`}
+                    alt={`Artwork detail`}
+                    className="w-full h-full object-contain"
+                  />
                 </div>
               )}
-            </React.Fragment>
+              <p className="leading-relaxed text-stone-700 font-serif text-lg">{para}</p>
+            </div>
           );
         })}
 
-        {/* IMPORTANT: Show any remaining images that weren't 
-          interspersed between paragraphs in a beautiful grid 
-        */}
-        {allImages.length > (paragraphs.length) && (
-          <div className="mt-24 space-y-12">
-            <div className="flex items-center gap-4">
-               <div className="h-[1px] flex-1 bg-stone-100"></div>
-               <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#A6894B]">Extended Gallery</span>
-               <div className="h-[1px] flex-1 bg-stone-100"></div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {allImages.slice(paragraphs.length).map((img, i) => (
-                <div key={i} className="aspect-[4/5] rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-500">
-                  <img 
-                    src={`${BASE_URL}${img}`} 
-                    className="w-full h-full object-cover" 
-                    alt="Gallery item" 
+        {/* Extended Gallery — images beyond what was inlined */}
+        {allImages.length > 6 && (
+          <div className="mt-16 pt-10 border-t border-stone-100">
+            <h3 className="text-xl font-serif text-stone-900 mb-8">Related Studies</h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+              {allImages.slice(6).map((img, i) => (
+                <div key={i} className="rounded-lg overflow-hidden shadow-sm h-40">
+                  <img
+                    src={`${BASE_URL}${img}`}
+                    className="w-full h-full object-cover"
+                    alt="Gallery item"
                   />
                 </div>
               ))}
             </div>
           </div>
         )}
-      </>
+      </div>
     );
   };
 
@@ -131,78 +130,73 @@ const BlogDetailPage = () => {
 
   return (
     <div className="min-h-screen bg-[#fcfbf9] font-sans">
-      {/* Article Header */}
-      <header className="max-w-[1600px] mx-auto pt-24 md:pt-40 pb-16 px-6 md:px-12">
-        <div className="max-w-4xl mx-auto text-center space-y-6">
-          <Link to="/blog" className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-stone-400 hover:text-stone-900 transition-colors mb-4">
-            <ArrowLeft size={14} /> Back to Collection
-          </Link>
-          <h1 className="text-5xl md:text-7xl font-serif text-stone-900 leading-[1.1] tracking-tight">
-            {blog.title}
-          </h1>
-          <div className="flex justify-center items-center gap-6 text-stone-400 text-[10px] tracking-[0.2em] uppercase pt-4">
-             <span>{new Date(blog.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
-             <span className="w-1.5 h-1.5 bg-[#A6894B] rounded-full" />
-             <span className="italic">{blog.author}</span>
-          </div>
+      {/* Header */}
+      <header className="max-w-7xl mx-auto pt-32 pb-16 px-6 text-center">
+        <Link to="/blog" className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-stone-400 hover:text-stone-900 mb-8 transition-colors">
+          <ArrowLeft size={14} /> Back to Journal
+        </Link>
+        <h1 className="text-4xl md:text-6xl font-serif text-stone-900 leading-tight mb-6">
+          {blog.title}
+        </h1>
+        <div className="flex justify-center items-center gap-4 text-stone-400 text-[10px] tracking-widest uppercase">
+          <span>{new Date(blog.publishedAt).toLocaleDateString('en-GB')}</span>
+          <span className="w-1 h-1 bg-stone-300 rounded-full" />
+          <span>{blog.author}</span>
         </div>
       </header>
 
-      <main className="max-w-[1600px] mx-auto px-6 md:px-12 pb-32">
-        <div className="max-w-4xl mx-auto">
-          
-          {/* Main Hero Image (First image in array) */}
-          {blog.images && blog.images[0] && (
-            <div className="mb-24 rounded-[2rem] overflow-hidden shadow-3xl shadow-stone-200">
-              <img 
-                src={`${BASE_URL}${blog.images[0]}`} 
-                className="w-full aspect-[16/10] object-cover" 
-                alt="Principal Work" 
-              />
+      <main className="max-w-7xl mx-auto px-6 pb-32">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+
+          {/* Content Column */}
+          <div className="lg:col-span-8">
+            {/* Main Image */}
+            {blog.images && blog.images[0] && (
+              <div className="mb-16 rounded-xl overflow-hidden shadow-xl">
+                <img
+                  src={`${BASE_URL}${blog.images[0]}`}
+                  className="w-full h-auto object-cover"
+                  alt="Principal Work"
+                />
+              </div>
+            )}
+
+            <div className="prose prose-stone max-w-none">
+              {renderArtGalleryContent()}
             </div>
-          )}
 
-          {/* Combined Paragraphs and Visuals */}
-          <article className="prose prose-stone prose-xl max-w-none font-serif text-[19px] leading-[1.9] text-stone-800">
-            {renderArtGalleryContent()}
-          </article>
-
-          {/* Tags Section */}
-          <div className="mt-32 pt-12 border-t border-stone-100 flex flex-wrap gap-3">
-            {blog.tags.map((tag, i) => (
-              <span key={i} className="px-6 py-2 bg-white text-stone-400 text-[10px] font-bold uppercase tracking-widest rounded-full border border-stone-100 hover:border-[#A6894B] hover:text-[#A6894B] transition-all cursor-default">
-                #{tag}
-              </span>
-            ))}
+            <div className="mt-20 pt-10 border-t border-stone-100 flex flex-wrap gap-2">
+              {blog.tags.map((tag, i) => (
+                <span key={i} className="px-4 py-1 bg-white text-stone-400 text-[10px] font-bold uppercase tracking-widest rounded-md border border-stone-100">
+                  #{tag}
+                </span>
+              ))}
+            </div>
           </div>
+
+          {/* Sidebar */}
+          <aside className="lg:col-span-4 lg:sticky lg:top-32">
+            <BlogsSidebarForm blogTitle={blog.title} />
+          </aside>
         </div>
       </main>
 
-      {/* Similar Works / Related Blogs */}
+      {/* Related Blogs */}
       {relatedBlogs.length > 0 && (
-        <section className="bg-stone-900 py-32 text-white">
-          <div className="max-w-[1600px] mx-auto px-6 md:px-12">
-            <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-              <div className="space-y-4">
-                <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#A6894B]">Curated Selection</span>
-                <h2 className="text-4xl md:text-5xl font-serif">Similar <span className="italic text-stone-400">Narratives</span></h2>
-              </div>
-              <Link to="/blog" className="text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 group border-b border-[#A6894B] pb-2">
-                View All Pieces <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <section className="bg-white py-24 border-t border-stone-100">
+          <div className="max-w-7xl mx-auto px-6">
+            <h2 className="text-2xl font-serif text-stone-900 mb-12">Continue Reading</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
               {relatedBlogs.map((rel) => (
                 <Link to={`/blog/${rel.slug}`} key={rel._id} className="group">
-                  <div className="aspect-[4/3] rounded-2xl overflow-hidden mb-6 bg-stone-800">
-                    <img 
-                      src={`${BASE_URL}${rel.images[0] || rel.featuredImage}`} 
-                      className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" 
+                  <div className="aspect-[16/10] rounded-xl overflow-hidden mb-4 shadow-sm group-hover:shadow-md transition-shadow">
+                    <img
+                      src={`${BASE_URL}${rel.images[0] || rel.featuredImage}`}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       alt={rel.title}
                     />
                   </div>
-                  <h3 className="font-serif text-2xl group-hover:text-[#A6894B] transition-colors">{rel.title}</h3>
+                  <h3 className="font-serif text-lg group-hover:text-[#A6894B] transition-colors">{rel.title}</h3>
                 </Link>
               ))}
             </div>

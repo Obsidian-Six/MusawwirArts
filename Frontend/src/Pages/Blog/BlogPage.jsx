@@ -114,34 +114,35 @@ const BlogPage = () => {
                   onMouseEnter={() => setHoveredIndex(idx)}
                   onMouseLeave={() => setHoveredIndex(null)}
                 >
-                  {/* Gallery Frame */}
-                  <Link to={`/blog/${blog.slug}`} className="relative aspect-[4/5] bg-stone-200 rounded-sm overflow-hidden mb-10 block p-4 shadow-inner">
-                    <div className="w-full h-full bg-white shadow-2xl relative overflow-hidden">
-                      <img 
-                        src={`${BASE_URL}${currentImg}`} 
-                        alt={blog.title}
-                        className="w-full h-full object-cover transition-all duration-700 ease-in-out"
-                        onError={(e) => { e.target.src = 'https://placehold.co/800x1000?text=Artwork+Not+Found'; }}
-                      />
-                      
-                      {/* Image Count Indicator */}
-                      {images.length > 1 && (
-                        <div className="absolute bottom-4 right-4 bg-stone-900/80 backdrop-blur-md px-3 py-1.5 rounded-lg flex items-center gap-2 text-white text-[10px] font-bold">
-                          <Images size={12} />
-                          <span>1 / {images.length}</span>
-                        </div>
-                      )}
+                  {/* Elegant Image Frame */}
+                  <Link to={`/blog/${blog.slug}`} className="relative aspect-[16/10] bg-stone-100 rounded-xl overflow-hidden mb-8 block group/img shadow-sm hover:shadow-2xl transition-all duration-500">
+                    <img 
+                      src={`${BASE_URL}${currentImg}`} 
+                      alt={blog.title}
+                      className="w-full h-full object-cover transition-all duration-[2s] ease-out group-hover/img:scale-110"
+                      onError={(e) => { e.target.src = 'https://placehold.co/800x500?text=Artwork+Not+Found'; }}
+                    />
+                    
+                    {/* Subtle Overlay */}
+                    <div className="absolute inset-0 bg-stone-900/0 group-hover/img:bg-stone-900/10 transition-all duration-700" />
+                    
+                    {/* Image Count Indicator */}
+                    {images.length > 1 && (
+                      <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-xl flex items-center gap-2 text-stone-900 text-[10px] font-bold shadow-sm">
+                        <Images size={12} className="text-[#A6894B]" />
+                        <span>{images.length}</span>
+                      </div>
+                    )}
 
-                      {/* Animated Progress Bar (Only visible on hover) */}
-                      {hoveredIndex === idx && images.length > 1 && (
-                        <div className="absolute bottom-0 left-0 w-full h-1 bg-white/20">
-                          <div 
-                            className="h-full bg-[#A6894B] transition-all duration-[1500ms] ease-linear"
-                            style={{ width: `${((activeImageIndex + 1) / images.length) * 100}%` }}
-                          />
-                        </div>
-                      )}
-                    </div>
+                    {/* Animated Progress Bar (Only visible on hover) */}
+                    {hoveredIndex === idx && images.length > 1 && (
+                      <div className="absolute bottom-0 left-0 w-full h-1 bg-white/20 overflow-hidden">
+                        <div 
+                          className="h-full bg-[#A6894B] transition-all duration-[1500ms] ease-linear"
+                          style={{ width: `${((activeImageIndex + 1) / images.length) * 100}%` }}
+                        />
+                      </div>
+                    )}
                   </Link>
 
                   <div className="space-y-5 px-2 flex-1 flex flex-col">
