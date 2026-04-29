@@ -77,7 +77,7 @@ const TestimonialSlider = () => {
   };
 
   return (
-    <section className="py-24 bg-[#FAF9F6] font-sans text-[#222] overflow-hidden">
+    <section className="py-24 font-sans text-[#222] overflow-hidden">
       <div className="max-w-[1500px] mx-auto px-6 md:px-12 lg:px-24 relative">
 
         <div className="text-center mb-20">

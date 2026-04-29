@@ -4,6 +4,9 @@ import ContactForm from '../../Components/ContactForm';
 import {  X, ShieldCheck } from 'lucide-react';
 import ProductExtras from './ProductExtras';
 import ImageZoom from '../../Components/ImageZoom';
+import TestimonialSlider from '../../Components/TestimonialSlider';
+import ArtAdvisory from '../../Components/ArtAdvisory';
+import { motion } from 'framer-motion';
 
 const ProductDetailsPage = () => {
   const { id } = useParams();
@@ -85,7 +88,7 @@ const ProductDetailsPage = () => {
       )}
 
       {/* Breadcrumbs - Sharper visibility */}
-      <nav className="flex items-center gap-3 text-xs font-medium uppercase tracking-[0.15em] text-stone-400 mb-10">
+      <nav className="flex flex-wrap items-center gap-3 text-xs font-medium uppercase tracking-[0.15em] text-stone-400 mb-10">
         <Link to="/" className="hover:text-stone-900 transition-colors">Home</Link>
         <span className="opacity-30">/</span>
         <Link to="/paintings" className="hover:text-stone-900 transition-colors">Paintings</Link>
@@ -96,18 +99,28 @@ const ProductDetailsPage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
         
         {/* LEFT: Image Section */}
-        <div className="lg:col-span-7 lg:sticky lg:top-24 z-50">
+        <motion.div 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="lg:col-span-7 lg:sticky lg:top-24 z-50"
+        >
           <ImageZoom 
             src={getFullImageUrl(product.imageUrl)} 
             alt={product.title} 
             onClick={() => setIsFullScreen(true)}
           />
-        </div>
+        </motion.div>
 
         {/* RIGHT: Details Section */}
-        <div className="lg:col-span-5 space-y-8">
-          <header className="space-y-2">
-            <h1 className="text-4xl md:text-5xl text-stone-900 font-serif leading-[1.1] tracking-tight">
+        <motion.div 
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+          className="lg:col-span-5 space-y-8"
+        >
+          <header className="space-y-4">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl text-stone-900 font-serif leading-[1.2] tracking-tight">
               {product.title}
             </h1>
             <p className="text-lg text-[#A6894B] font-serif italic tracking-wide">
@@ -152,15 +165,16 @@ const ProductDetailsPage = () => {
           </div>
 
           <div className="pt-4 flex gap-4">
-            <button
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => setIsContactOpen(true)}
-              className="flex-grow bg-[#1a1a1a] text-white py-5 rounded-sm text-xs font-bold uppercase tracking-[0.25em] hover:bg-stone-800 transition-all active:scale-[0.98] shadow-lg shadow-stone-200"
+              className="flex-grow bg-[#1a1a1a] text-white py-5 rounded-sm text-xs font-bold uppercase tracking-[0.25em] hover:bg-stone-800 transition-all shadow-lg shadow-stone-200"
             >
               Request for Price
-            </button>
-
+            </motion.button>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {isContactOpen && (
@@ -177,6 +191,9 @@ const ProductDetailsPage = () => {
       <div className="mt-24">
         <ProductExtras currentProduct={product} />
       </div>
+
+      <ArtAdvisory />
+      <TestimonialSlider />
     </div>
   );
 };
