@@ -68,14 +68,16 @@ const BlogDetailPage = () => {
     const totalImages = inlineImages.length;
 
     // Distribute images evenly across paragraphs
-    // e.g. 4 images across 8 paragraphs → image at para 0, 2, 4, 6
     const imageAtIndex = {};
-    for (let i = 0; i < totalImages; i++) {
-      const paraIdx = Math.min(
-        Math.round((i / totalImages) * totalParagraphs),
-        totalParagraphs - 1
-      );
-      imageAtIndex[paraIdx] = inlineImages[i];
+    if (totalParagraphs > 0) {
+      for (let i = 0; i < totalImages; i++) {
+        // Spread images out, but ensure we don't exceed the number of paragraphs
+        const paraIdx = Math.min(
+          Math.floor((i / totalImages) * totalParagraphs),
+          totalParagraphs - 1
+        );
+        imageAtIndex[paraIdx] = inlineImages[i];
+      }
     }
 
     return (
@@ -85,8 +87,9 @@ const BlogDetailPage = () => {
 
           return (
             <div key={index} className="mb-12">
+              <p className="leading-relaxed text-stone-700 font-serif text-lg whitespace-pre-wrap">{para}</p>
               {imageToShow && (
-                <div className="mb-6 rounded-xl overflow-hidden shadow-md w-full aspect-[4/3] bg-stone-50">
+                <div className="mt-8 mb-4 rounded-xl overflow-hidden shadow-md w-full aspect-[4/3] bg-stone-50">
                   <img
                     src={`${BASE_URL}${imageToShow}`}
                     alt={`Artwork detail`}
@@ -94,7 +97,6 @@ const BlogDetailPage = () => {
                   />
                 </div>
               )}
-              <p className="leading-relaxed text-stone-700 font-serif text-lg">{para}</p>
             </div>
           );
         })}

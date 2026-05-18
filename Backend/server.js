@@ -56,6 +56,7 @@ import TestimonialRoutes from './Routes/TestimonialRoutes.js';
 import BlogRoutes from './Routes/BlogRoutes.js';
 import FeaturedCollectionRoutes from './Routes/FeaturedCollectionRoutes.js';
 import SculptureRoutes from './Routes/SculptureRoutes.js';
+import SitemapRoutes from './Routes/SitemapRoutes.js';
 
 // Removed the redundant app.use('/uploads') from here to prevent path conflicts
 
@@ -69,6 +70,7 @@ app.use('/api/testimonials', TestimonialRoutes);
 app.use('/api/blogs', BlogRoutes);
 app.use('/api/featured-collections', FeaturedCollectionRoutes);
 app.use('/api/sculptures', SculptureRoutes);
+app.use('/api/sitemap', SitemapRoutes);
 
 app.use((err, req, res, next) => {
     console.error("Global Error Handler:", err.message);

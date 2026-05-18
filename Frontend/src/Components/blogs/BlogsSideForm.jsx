@@ -142,17 +142,22 @@ const BlogsSidebarForm = ({ blogTitle }) => {
                         />
                     </div>
 
-                    <div className="flex flex-col">
-                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">
+                    <div className="flex flex-col relative z-20">
+                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1" htmlFor="phone-input">
                             Phone
                         </label>
                         <PhoneInput
                             country={"in"}
                             value={phone}
                             onChange={(value) => setPhone(value)}
-                            inputClass="!border !border-slate-200 !p-2.5 !h-auto !text-xs !w-full !rounded-none"
-                            containerClass="!w-full"
-                            buttonClass="!border-slate-200 !bg-white"
+                            inputProps={{
+                                name: "phone",
+                                required: true,
+                                id: "phone-input"
+                            }}
+                            inputClass="!border !border-slate-200 !text-xs !w-full !rounded-none !bg-white focus:!border-[#A6894B] transition-all !py-2.5 !pr-2.5 !h-[36px]"
+                            containerClass="!w-full relative z-[60]"
+                            buttonClass="!border-y-0 !border-l-0 !border-r !border-slate-200 !bg-white hover:!bg-stone-50 !rounded-none"
                         />
                     </div>
                 </div>
