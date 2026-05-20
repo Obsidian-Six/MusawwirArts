@@ -1,6 +1,7 @@
 import React from 'react';
 import { MessageCircle } from 'lucide-react';
 import SubNav from '../../Components/SubNav';
+import useSEO from '../../hooks/useSEO';
 
 // Import local assets
 import dustRemovalImg from '../../assets/maintenance/dust_removal.png';
@@ -45,6 +46,12 @@ const MaintenanceSection = ({ title, description, image, isReversed, whatsappLin
 };
 
 const ArtMaintenance = () => {
+  useSEO({
+    title: 'Art Maintenance & Conservation Services',
+    description: 'Professional art maintenance and conservation services including dust removal, microscopic cleaning, UV treatment, and documentation. Preserve your collection with Musawwir Art.',
+    canonical: 'https://musawwirart.com/art-maintenance',
+  });
+
   const whatsappBase = "https://wa.me/971585415011?text=";
 
   const services = [

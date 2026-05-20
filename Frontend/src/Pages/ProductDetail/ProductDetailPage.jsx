@@ -7,6 +7,7 @@ import ImageZoom from '../../Components/ImageZoom';
 import TestimonialSlider from '../../Components/TestimonialSlider';
 import ArtAdvisory from '../../Components/ArtAdvisory';
 import { motion } from 'framer-motion';
+import useSEO from '../../hooks/useSEO';
 
 const ProductDetailsPage = () => {
   const { id } = useParams();
@@ -14,6 +15,16 @@ const ProductDetailsPage = () => {
   const [loading, setLoading] = useState(true);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
+
+  // Dynamic SEO based on loaded product
+  useSEO({
+    title: product ? `${product.title} — Original Painting` : 'Painting Detail',
+    description: product
+      ? `Acquire "${product.title}" by ${product.artist || 'Mandeep Kumar Ghai'}. ${product.medium || 'Original painting'}, ${product.dimensions || ''}. Certified provenance — Musawwir Art.`
+      : 'View original painting details with certified provenance at Musawwir Art.',
+    canonical: `https://musawwirart.com/paintings/${id}`,
+    ogImage: product ? getFullImageUrl(product.imageUrl) : undefined,
+  });
 
   const getFullImageUrl = (path) => {
     if (!path) return "/placeholder-art.jpg";

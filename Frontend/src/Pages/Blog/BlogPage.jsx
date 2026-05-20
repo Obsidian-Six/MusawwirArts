@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, ArrowRight, Palette, Layers, Sparkles, User, Images } from 'lucide-react';
+import useSEO from '../../hooks/useSEO';
 
 const BlogPage = () => {
   const [blogs, setBlogs] = useState([]);
@@ -12,6 +13,12 @@ const BlogPage = () => {
 
   const API_URL = import.meta.env.VITE_BASE_URL.replace(/\/$/, "");
   const BASE_URL = API_URL.split('/api')[0].replace(/\/$/, "");
+
+  useSEO({
+    title: 'Art Journal — Reflections on Art & Soul',
+    description: 'Read the Musawwir Art Journal — in-depth articles on fine art techniques, contemporary Indian painting, artist spotlights, and the philosophy of collecting original art.',
+    canonical: 'https://musawwirart.com/blog',
+  });
 
   const categories = [
     { name: 'All Collection', icon: <Palette size={14} /> },

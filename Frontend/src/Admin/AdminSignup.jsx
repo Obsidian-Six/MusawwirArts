@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import useSEO from '../hooks/useSEO';
 
 const AdminSignup = () => {
+  useSEO({ title: 'Admin Register', robots: 'noindex, nofollow' });
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');

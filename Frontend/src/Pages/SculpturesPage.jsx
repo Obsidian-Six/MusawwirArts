@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import useSEO from '../hooks/useSEO';
 
 const SculpturesPage = () => {
     const [sculptures, setSculptures] = useState([]);
@@ -8,6 +9,12 @@ const SculpturesPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
 
     const itemsPerPage = 9;
+
+    useSEO({
+        title: 'Sculpture Collection — Original Fine Art Sculptures',
+        description: 'Discover original sculptures by Mandeep Kumar Ghai. Hand-crafted fine art sculptures with certified provenance and bespoke acquisition. Browse the collection at Musawwir Art.',
+        canonical: 'https://musawwirart.com/sculptures',
+    });
 
     useEffect(() => {
         const fetchData = async () => {
@@ -84,9 +91,9 @@ const SculpturesPage = () => {
                             </div>
 
                             <div className="flex flex-col gap-1.5 font-sans mt-auto pt-2">
-                                <h3 className="text-[12px] md:text-[14px] uppercase tracking-[0.15em] text-gray-900 leading-snug group-hover:text-[#A6894B] transition-colors font-medium">
+                                <h2 className="text-[12px] md:text-[14px] uppercase tracking-[0.15em] text-gray-900 leading-snug group-hover:text-[#A6894B] transition-colors font-medium">
                                     {art.title}
-                                </h3>
+                                </h2>
 
                                 <div className="flex flex-col mt-0.5 border-t border-stone-50 pt-1.5">
                                     <p className="text-[11px] md:text-[12px] text-stone-600 tracking-tight italic leading-relaxed">

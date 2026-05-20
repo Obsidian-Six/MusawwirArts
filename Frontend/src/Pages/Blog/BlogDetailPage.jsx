@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 
 import BlogsSidebarForm from '../../Components/blogs/BlogsSideForm';
+import useSEO from '../../hooks/useSEO';
 
 const BlogDetailPage = () => {
   const { slug } = useParams();
@@ -15,6 +16,16 @@ const BlogDetailPage = () => {
 
   const API_URL = import.meta.env.VITE_BASE_URL.replace(/\/$/, "");
   const BASE_URL = API_URL.split('/api')[0].replace(/\/$/, "");
+
+  // Dynamic SEO — updates whenever blog data is loaded
+  useSEO({
+    title: blog ? (blog.seo?.metaTitle || blog.title) : 'Art Journal',
+    description: blog
+      ? (blog.seo?.metaDescription || blog.excerpt || `Read "${blog.title}" in the Musawwir Art Journal.`)
+      : 'Explore the Musawwir Art Journal for insights into fine art, techniques, and collecting.',
+    canonical: `https://musawwirart.com/blog/${slug}`,
+    ogImage: blog?.images?.[0] ? `${BASE_URL}${blog.images[0]}` : undefined,
+  });
 
   useEffect(() => {
     fetchBlog();
@@ -28,7 +39,7 @@ const BlogDetailPage = () => {
       const data = await response.json();
       if (data.success) {
         setBlog(data.data);
-        document.title = `${data.data.seo?.metaTitle || data.data.title} | Musawwir Art`;
+        // document.title is now managed by useSEO hook above
         fetchRelated(data.data.categories[0]);
       } else {
         navigate('/blog');

@@ -1,7 +1,15 @@
 import React from 'react';
 import SubNav from '../../Components/SubNav';
+import useSEO from '../../hooks/useSEO';
 
 const CopyrightPolicy = () => {
+  useSEO({
+    title: 'Copyright & Intellectual Property Policy',
+    description: 'Read the Musawwir Art Copyright & IP Policy. All artworks, images, and content are protected under Indian and international copyright law. Understand permitted and prohibited uses.',
+    canonical: 'https://musawwirart.com/copyright',
+    robots: 'index, follow',
+  });
+
   const sections = [
     { id: "ownership", title: "1. Ownership & IP" },
     { id: "scope", title: "2. Scope of Protection" },
@@ -47,9 +55,9 @@ const CopyrightPolicy = () => {
                 <span className="h-4 w-[1px] bg-stone-300"></span>
                 <span className="text-stone-500 font-bold tracking-[0.2em] text-[10px] uppercase">MUSAWWIR ART</span>
             </div>
-            <h1 className="text-3xl md:text-5xl font-serif italic text-stone-900 mb-6 leading-tight">
-                Copyright, Intellectual Property & Usage Policy
-            </h1>
+            <h2 className="text-3xl md:text-5xl font-serif italic text-stone-900 mb-6 leading-tight">
+                Copyright, Intellectual Property &amp; Usage Policy
+            </h2>
             <div className="flex flex-col gap-2 text-stone-900 font-serif italic text-lg mb-4">
                 <p>www.musawwirart.com</p>
                 <p>– Fine Art & Luxury Paintings –</p>

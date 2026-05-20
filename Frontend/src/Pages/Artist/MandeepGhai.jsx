@@ -2,12 +2,19 @@ import React, { useState, useEffect, useRef } from 'react';
 import buildImageUrl from '../../Utils/buildImageUrl';
 import { Link, useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Award, MapPin, GraduationCap, Quote } from 'lucide-react';
+import useSEO from '../../hooks/useSEO';
 
 const MandeepGhai = () => {
     const [paintings, setPaintings] = useState([]);
     const [loading, setLoading] = useState(true);
     const sliderRef = useRef(null);
     const navigate = useNavigate();
+
+    useSEO({
+        title: 'Mandeep Kumar Ghai — Contemporary Indian Artist',
+        description: 'Explore the works of Mandeep Kumar Ghai — Gold Medalist and contemporary Indian artist. Paintings exhibited in New Delhi, London, and Dubai. Junior Fellowship recipient, Ministry of Culture, India.',
+        canonical: 'https://musawwirart.com/artist',
+    });
 
     // --- URL LOGIC ---
     const rawApiUrl = import.meta.env.VITE_BASE_URL || window.location.origin;
@@ -98,7 +105,7 @@ const MandeepGhai = () => {
                                     <Award size={24} />
                                 </div>
                                 <div>
-                                    <h4 className="font-bold text-sm uppercase tracking-widest text-stone-900">Gold Medalist</h4>
+                            <h3 className="font-bold text-sm uppercase tracking-widest text-stone-900">Gold Medalist</h3>
                                     <p className="text-stone-500 text-sm">Himachal Pradesh University, Shimla (2009)</p>
                                 </div>
                             </div>
@@ -107,7 +114,7 @@ const MandeepGhai = () => {
                                     <MapPin size={24} />
                                 </div>
                                 <div>
-                                    <h4 className="font-bold text-sm uppercase tracking-widest text-stone-900">Punjab, India</h4>
+                                    <h3 className="font-bold text-sm uppercase tracking-widest text-stone-900">Punjab, India</h3>
                                     <p className="text-stone-500 text-sm">Born 1984, working globally</p>
                                 </div>
                             </div>
@@ -116,7 +123,7 @@ const MandeepGhai = () => {
                                     <GraduationCap size={24} />
                                 </div>
                                 <div>
-                                    <h4 className="font-bold text-sm uppercase tracking-widest text-stone-900">Academic Research</h4>
+                                    <h3 className="font-bold text-sm uppercase tracking-widest text-stone-900">Academic Research</h3>
                                     <p className="text-stone-500 text-sm">Expertise in Modern Indian Art</p>
                                 </div>
                             </div>

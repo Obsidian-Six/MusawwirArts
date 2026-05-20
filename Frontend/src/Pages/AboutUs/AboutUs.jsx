@@ -1,8 +1,15 @@
 import React from 'react';
 import FAQSection from './FAQsection';
+import useSEO from '../../hooks/useSEO';
 
 const AboutUs = () => {
     const imageSrc = "/Client_images/Weight_Of_Moments.jpg";
+
+    useSEO({
+        title: 'About Us — Musawwir Art Gallery',
+        description: 'Learn about Musawwir Art — a premier gallery bridging distinguished contemporary artists with global collectors. Bespoke art advisory, authentication, and curated collections.',
+        canonical: 'https://musawwirart.com/aboutus',
+    });
 
     return (
         <main className="bg-white min-h-screen">

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import useSEO from '../hooks/useSEO';
 
 const PaintingsPage = () => {
     const [paintings, setPaintings] = useState([]);
@@ -14,6 +15,12 @@ const PaintingsPage = () => {
 
     const location = useLocation();
     const itemsPerPage = 9;
+
+    useSEO({
+        title: 'Paintings Collection — Original Fine Art',
+        description: 'Browse original fine art paintings by Mandeep Kumar Ghai. Oil, acrylic, and mixed media works with certified provenance. Filter by style and medium at Musawwir Art.',
+        canonical: 'https://musawwirart.com/paintings',
+    });
 
     // 1. Fetch BOTH Paintings and Categories on mount
     useEffect(() => {
@@ -180,9 +187,9 @@ const PaintingsPage = () => {
                             {/* Text Container */}
                             <div className="flex flex-col gap-1.5 font-sans mt-auto pt-2">
                                 {/* Title: Slightly larger, uppercase, with letter spacing for a premium feel */}
-                                <h3 className="text-[12px] md:text-[14px] uppercase tracking-[0.15em] text-gray-900 leading-snug group-hover:text-[#A6894B] transition-colors font-medium">
+                                <h2 className="text-[12px] md:text-[14px] uppercase tracking-[0.15em] text-gray-900 leading-snug group-hover:text-[#A6894B] transition-colors font-medium">
                                     {art.title}
-                                </h3>
+                                </h2>
 
                                 {/* Category: Small, subtle, and clean */}
                                 <p className="text-[10px] md:text-[11px] text-[#A6894B] tracking-widest uppercase font-semibold">

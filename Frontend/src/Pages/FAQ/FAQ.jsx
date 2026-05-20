@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, MapPin, Mail, Phone, ShieldCheck } from 'lucide-react';
 import SubNav from '../../Components/SubNav';
+import useSEO from '../../hooks/useSEO';
 
 const AccordionItem = ({ title, children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,6 +26,12 @@ const AccordionItem = ({ title, children }) => {
 };
 
 const FAQ = () => {
+  useSEO({
+    title: 'Frequently Asked Questions — Buying & Selling Art',
+    description: 'Find answers to common questions about buying original art, shipping, authenticity, and selling on Musawwir Art. Contact our curators 24/7 for further assistance.',
+    canonical: 'https://musawwirart.com/faq',
+  });
+
   return (
     <div className="bg-white min-h-screen">
       {/* Banner Header */}

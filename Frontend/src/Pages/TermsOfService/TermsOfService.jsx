@@ -1,7 +1,15 @@
 import React from 'react';
 import SubNav from '../../Components/SubNav';
+import useSEO from '../../hooks/useSEO';
 
 const TermsOfService = () => {
+  useSEO({
+    title: 'Terms of Service — Musawwir Art',
+    description: 'Read the Terms of Service for Musawwir Art. Understand your legal rights and responsibilities when using our fine art gallery, purchasing original artworks, and engaging with our platform.',
+    canonical: 'https://musawwirart.com/terms',
+    robots: 'index, follow',
+  });
+
   const sections = [
     { id: "acceptance", title: "Acceptance of Terms" },
     { id: "eligibility", title: "Eligibility" },
@@ -39,7 +47,7 @@ const TermsOfService = () => {
         {/* Content Section */}
         <main className="flex-grow max-w-3xl">
           <header className="mb-12">
-            <h1 className="text-3xl md:text-5xl font-serif italic text-stone-900 mb-4">Terms of Service</h1>
+            <h2 className="text-3xl md:text-5xl font-serif italic text-stone-900 mb-4">Terms of Service</h2>
             <p className="text-stone-400 text-sm italic font-light">Last Updated: April 17, 2026</p>
           </header>
 

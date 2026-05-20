@@ -6,6 +6,7 @@ import ImageZoom from '../Components/ImageZoom';
 import TestimonialSlider from '../Components/TestimonialSlider';
 import ArtAdvisory from '../Components/ArtAdvisory';
 import { motion } from 'framer-motion';
+import useSEO from '../hooks/useSEO';
 
 const SculptureDetailPage = () => {
   const { id } = useParams();
@@ -13,6 +14,16 @@ const SculptureDetailPage = () => {
   const [loading, setLoading] = useState(true);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
+
+  // Dynamic SEO based on loaded sculpture
+  useSEO({
+    title: product ? `${product.title} — Original Sculpture` : 'Sculpture Detail',
+    description: product
+      ? `Acquire "${product.title}" by ${product.artist || 'Mandeep Kumar Ghai'}. ${product.material || 'Original sculpture'}, ${product.dimensions || ''}. Certified provenance — Musawwir Art.`
+      : 'View original sculpture details with certified provenance at Musawwir Art.',
+    canonical: `https://musawwirart.com/sculptures/${id}`,
+    ogImage: product ? getFullImageUrl(product.imageUrl) : undefined,
+  });
 
   const getFullImageUrl = (path) => {
     if (!path) return "/placeholder-art.jpg";

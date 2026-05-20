@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
+import useSEO from './hooks/useSEO';
 
 // Public Components
 import Header from './Components/Header';
@@ -115,6 +116,13 @@ function Home() {
   const [showForm, setShowForm] = useState(false);
   const [selectedArt, setSelectedArt] = useState(""); // New state for the title
   const [selectedArtImage, setSelectedArtImage] = useState("");
+
+  useSEO({
+    title: 'Original Paintings & Sculptures by Mandeep Kumar Ghai',
+    description: 'Discover original fine art paintings and sculptures by Mandeep Kumar Ghai. Explore curated contemporary Indian art collections with certified provenance at Musawwir Art.',
+    canonical: 'https://musawwirart.com/',
+    ogImage: 'https://musawwirart.com/translogo.png',
+  });
 
   useEffect(() => {
     const timer = setTimeout(() => {

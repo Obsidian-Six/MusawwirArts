@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Block admin routes from indexing
+Disallow: /admin/
+
+Sitemap: https://musawwirart.com/sitemap.xml

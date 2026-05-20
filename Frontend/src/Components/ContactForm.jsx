@@ -107,9 +107,9 @@ const handleSubmit = async (e) => {
         {/* Right Side Form */}
         <div className="md:w-2/3 p-8 md:p-12 lg:px-16 lg:py-10 flex flex-col justify-center bg-white">
           <header className="mb-8">
-            <h1 className="text-2xl md:text-3xl text-stone-900 font-serif tracking-tight">
+            <h2 className="text-2xl md:text-3xl text-stone-900 font-serif tracking-tight">
               Gallery Inquiry
-            </h1>
+            </h2>
             <p className="text-stone-500 text-xs font-sans mt-2 tracking-wide">
               Requesting details for: <span className="text-stone-900 font-bold">{artworkName}</span>
             </p>

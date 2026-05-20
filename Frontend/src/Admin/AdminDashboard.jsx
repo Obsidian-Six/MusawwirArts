@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import useSEO from '../hooks/useSEO';
 import OverviewComponent from './components/OverviewComponent';
 import PaintingForm from './components/PaintingForm';
 import ManageGallery from './components/ManageGallery';
@@ -22,6 +23,8 @@ import {
 } from 'lucide-react';
 
 const AdminDashboard = () => {
+  useSEO({ title: 'Admin Dashboard', robots: 'noindex, nofollow' });
+
   const [activeTab, setActiveTab] = useState('overview');
   const [selectedPainting, setSelectedPainting] = useState(null);
   const [selectedSculpture, setSelectedSculpture] = useState(null);
